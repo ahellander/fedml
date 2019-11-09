@@ -18,7 +18,7 @@ import  math
 import copy
 
 import keras
-from fyrai.runtime.runtime import Runtime
+# from fyrai.runtime.runtime import Runtime
 from keras.layers import Conv2D, MaxPooling2D
 from keras.layers import Dense, Dropout, Flatten
 from keras.models import Sequential
@@ -73,6 +73,30 @@ class KerasSequentialBaseLearner(BaseLearner):
                 epochs=epochs,
                 verbose=1,
                 )
+
+class KerasSequentialBaseLearner2(BaseLearner):
+    """  Keras Sequential base learner."""
+
+    def __init__(self, partial_fit, model=None):
+        self.model = model
+        self.partial_fit = partial_fit
+
+    @staticmethod
+    def average_weights(models):
+        """ fdfdsfs """
+        weights = [model.model.get_weights() for model in models]
+
+        avg_w = []
+        for l in range(len(weights[0])):
+            lay_l = np.array([w[l] for w in weights])
+            weight_l_avg = np.mean(lay_l, 0)
+            avg_w.append(weight_l_avg)
+
+        return avg_w
+
+    def set_weights(self, weights):
+        self.model.set_weights(weights)
+
 
     def predict(self,x):
         y = self.model.predict(x)
