@@ -1,5 +1,6 @@
 from fedml import BaseLearner
 import keras
+from keras.utils import to_categorical
 from keras.preprocessing.image import ImageDataGenerator
 from keras.models import Sequential
 from keras.layers import Dense, Dropout, Activation, Flatten, BatchNormalization
@@ -38,7 +39,7 @@ def create_cifarmodel():
     model.add(Activation('softmax'))
 
     # initiate RMSprop optimizer
-    opt = keras.optimizers.Adam(learning_rate=0.001)#, decay=1e-6)
+    opt = keras.optimizers.Adam(learning_rate=0.001, decay=1e-6)
     # opt = keras.optimizers.SGD(learning_rate=0.001)#, decay=1e-6)
 
     # Let's train the model using RMSprop
@@ -79,7 +80,9 @@ class KerasSequentialCifar(BaseLearner):
         self.model.set_weights(weights)
 
     def predict(self, x):
-        return self.model.predict(x)
+
+        return to_categorical(self.model.predict_classes(x), num_classes=10)
+        # return self.model.predict(x)
 
     def partial_fit(self,x,y,classes=None):
         """ Do a partial fit. """
