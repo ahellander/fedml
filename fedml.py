@@ -313,9 +313,16 @@ class FedAveragingClassifier(AllianceModel):
             for indx in rand_indx:
                 # Each member gets its own copy of the model
                 # partialModel = copy.deepcopy(self.current_global_model)
+                # self.alliance.members[indx].set_model()
+                print("Before training -- virtual memory used: ", psutil.virtual_memory()[2], "%")
+
                 self.alliance.members[indx].train(self.alliance.members[indx].model,nr_iter=parameters["nr_local_iterations"])
+                print("After training -- virtual memory used: ", psutil.virtual_memory()[2], "%")
+
                 # self.alliance.members[indx].train(partialModel,nr_iter=parameters["nr_local_iterations"])
                 round_models.append(self.alliance.members[indx].model)
+                print("After append model -- virtual memory used: ", psutil.virtual_memory()[2], "%")
+
 
             # Average the model updates  - here  we have a global synchronization step. Server should aggregate
             weights = self.current_global_model.average_weights(round_models)
