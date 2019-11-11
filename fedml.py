@@ -453,7 +453,7 @@ class Alliance(object):
         score_matrix = np.zeros((len(self.members),len(self.members)))
         for db_member in range(len(self.members)):
             for model_member in range(len(self.members)):
-                score_matrix[db_member,model_member] = self.member[db_member].scoreLocalData(self.member[model_member.model])
+                score_matrix[db_member,model_member] = self.members[db_member].scoreLocalData(self.members[model_member.model])
 
         score_matrix -= np.mean(score_matrix)
         for model_member in range(len(self.members)):
