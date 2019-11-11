@@ -38,11 +38,11 @@ def create_cifarmodel():
     model.add(Dense(10))
     model.add(Activation('softmax'))
 
-    # initiate RMSprop optimizer
+    # initiate Adam optimizer
     opt = keras.optimizers.Adam(learning_rate=0.001, decay=1e-6)
     # opt = keras.optimizers.SGD(learning_rate=0.001)#, decay=1e-6)
 
-    # Let's train the model using RMSprop
+    # Let's train the model using Adam
     model.compile(loss='categorical_crossentropy',
                   optimizer=opt,
                   metrics=['accuracy'])

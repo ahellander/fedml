@@ -329,7 +329,9 @@ class FedAveragingClassifier(AllianceModel):
             # Average the model updates  - here  we have a global synchronization step. Server should aggregate
             weights = self.current_global_model.average_weights(round_models)
             self.current_global_model.set_weights(weights)
-
+            self.alliance.global_score_local_models()
+            for member in self.alliance.members:
+                print("member global score: ", member.global_score)
             #self.current_global_model = model
             
             # Training loss, mean error rate over all alliance training data
@@ -446,6 +448,16 @@ class Alliance(object):
         errRate = compute_errorRate(y_test, y_pred)
         return errRate
 
+    def global_score_local_models(self):
+        score_matrix = np.zeros((len(self.members,len(self.members))))
+        for db_member in range(len(self.members)):
+            for model_member in range(len(self.members)):
+                score_matrix[db_member,model_member] = self.member[db_member].scoreLocalData(self.member[model_member.model])
+
+        score_matrix -= np.mean(score_matrix)
+        for model_member in range(len(self.members)):
+            self.members[model_member].global_score.append(np.mean(score_matrix[:,model_member]))
+
 
 class AllianceMember(object):
     """ Member of machine learning alliance """
@@ -461,6 +473,7 @@ class AllianceMember(object):
         self.P = x_train.shape[1]
         self.loss = 'hinge'
         self.classes = classes
+        self.global_score = []
 
     def get_model(self):
         if self.model is None:
