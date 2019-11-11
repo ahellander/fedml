@@ -460,6 +460,7 @@ class Alliance(object):
             self.members[model_member].global_score.append(np.mean(score_matrix[:,model_member]))
 
 
+
 class AllianceMember(object):
     """ Member of machine learning alliance """
 
