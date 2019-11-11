@@ -309,11 +309,13 @@ class FedAveragingClassifier(AllianceModel):
             # This step is a map operation - should happen in parallel/async
             rand_indx = np.random.permutation(len(self.alliance.members))
 
-
+            global_weights = self.current_global_model.get_weights()
             for indx in rand_indx:
                 # Each member gets its own copy of the model
                 # partialModel = copy.deepcopy(self.current_global_model)
                 # self.alliance.members[indx].set_model()
+                print("Before set weights -- virtual memory used: ", psutil.virtual_memory()[2], "%")
+                self.alliance.members[indx].model.set_weights(self, global_weights)
                 print("Before training -- virtual memory used: ", psutil.virtual_memory()[2], "%")
 
                 self.alliance.members[indx].train(self.alliance.members[indx].model,nr_iter=parameters["nr_local_iterations"])
