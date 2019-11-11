@@ -335,6 +335,7 @@ class FedAveragingClassifier(AllianceModel):
             # Training loss, mean error rate over all alliance training data
             training_loss.append(self.alliance.alliance_training_loss(self.current_global_model))
             # Test loss, mean error rate on a  validation set
+            print("training loss: ", training_loss[-1])
             try:
                 test_loss.append(self.alliance.alliance_test_loss(self.current_global_model))
                 # TODO: Implement early stopping
