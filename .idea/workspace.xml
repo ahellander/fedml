@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="fa5be9ab-e33f-4f24-9fa0-0a791864d48f" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fedml.py" beforeDir="false" afterPath="$PROJECT_DIR$/fedml.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -15,8 +15,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/fedml.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="429">
-              <caret line="339" column="73" lean-forward="true" selection-start-line="339" selection-start-column="73" selection-end-line="339" selection-end-column="73" />
+            <state relative-caret-position="310">
+              <caret line="560" column="62" selection-start-line="560" selection-start-column="62" selection-end-line="560" selection-end-column="62" />
               <folding>
                 <element signature="e#0#35#0" expanded="true" />
               </folding>
@@ -50,6 +50,7 @@
       <find>keras</find>
       <find>summary</find>
       <find>get_w</find>
+      <find>compute_err</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -242,7 +243,14 @@
       <option name="project" value="LOCAL" />
       <updated>1573476557829</updated>
     </task>
-    <option name="localTasksCounter" value="19" />
+    <task id="LOCAL-00019" summary="debugging memory leaks in fedml.py">
+      <created>1573476637733</created>
+      <option name="number" value="00019" />
+      <option name="presentableId" value="LOCAL-00019" />
+      <option name="project" value="LOCAL" />
+      <updated>1573476637733</updated>
+    </task>
+    <option name="localTasksCounter" value="20" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -286,8 +294,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/fedml.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="429">
-          <caret line="339" column="73" lean-forward="true" selection-start-line="339" selection-start-column="73" selection-end-line="339" selection-end-column="73" />
+        <state relative-caret-position="310">
+          <caret line="560" column="62" selection-start-line="560" selection-start-column="62" selection-end-line="560" selection-end-column="62" />
           <folding>
             <element signature="e#0#35#0" expanded="true" />
           </folding>
