@@ -509,8 +509,12 @@ class AllianceMember(object):
 
     def train(self, partialModel, nr_iter=1):
         """ Update global model by training nr_iter iterations on local training data. """
+        print("start train -- virtual memory used: ", psutil.virtual_memory()[2], "%")
+
         for j in range(nr_iter):
             train_index = np.random.permutation(len(self.__x_train))
+            print("after train_index -- virtual memory used: ", psutil.virtual_memory()[2], "%")
+
             partialModel.partial_fit(self.__x_train[train_index],self.__y_train[train_index],classes=self.classes)
 
 
