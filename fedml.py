@@ -332,6 +332,7 @@ class FedAveragingClassifier(AllianceModel):
             self.alliance.global_score_local_models()
             for member in self.alliance.members:
                 print("member global score: ", member.global_score)
+
             #self.current_global_model = model
             
             # Training loss, mean error rate over all alliance training data
