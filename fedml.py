@@ -332,6 +332,7 @@ class FedAveragingClassifier(AllianceModel):
             self.alliance.global_score_local_models()
             for member in self.alliance.members:
                 print("member global score: ", member.global_score)
+                print("")
 
             #self.current_global_model = model
             
