@@ -315,7 +315,7 @@ class FedAveragingClassifier(AllianceModel):
                 # partialModel = copy.deepcopy(self.current_global_model)
                 # self.alliance.members[indx].set_model()
                 print("Before set weights -- virtual memory used: ", psutil.virtual_memory()[2], "%")
-                self.alliance.members[indx].model.set_weights(self, global_weights)
+                self.alliance.members[indx].model.set_weights(global_weights)
                 print("Before training -- virtual memory used: ", psutil.virtual_memory()[2], "%")
 
                 self.alliance.members[indx].train(self.alliance.members[indx].model,nr_iter=parameters["nr_local_iterations"])
