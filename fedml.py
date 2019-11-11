@@ -296,6 +296,9 @@ class FedAveragingClassifier(AllianceModel):
         if not self.current_global_model:
             self.current_global_model  = self.base_learner
 
+
+        for member in self.alliance.members:
+            member.set_model(self.current_global_model)
         #  Start training 
         for j in range(parameters["nr_global_iterations"]):
             print("global epoch: ", j)
@@ -309,9 +312,10 @@ class FedAveragingClassifier(AllianceModel):
 
             for indx in rand_indx:
                 # Each member gets its own copy of the model
-                partialModel = copy.deepcopy(self.current_global_model)
-                self.alliance.members[indx].train(partialModel,nr_iter=parameters["nr_local_iterations"])
-                round_models.append(partialModel)
+                # partialModel = copy.deepcopy(self.current_global_model)
+                self.alliance.members[indx].train(self.alliance.members[indx].model,nr_iter=parameters["nr_local_iterations"])
+                # self.alliance.members[indx].train(partialModel,nr_iter=parameters["nr_local_iterations"])
+                round_models.append(self.alliance.members[indx].model)
 
             # Average the model updates  - here  we have a global synchronization step. Server should aggregate
             weights = self.current_global_model.average_weights(round_models)
