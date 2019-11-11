@@ -533,6 +533,7 @@ class AllianceMember(object):
             return 1;
         y_pred = partial_model.predict(self.__x_train)
         errRate = compute_errorRate(self.__y_train, y_pred)
+
         return errRate
 
 
