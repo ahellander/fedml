@@ -314,16 +314,16 @@ class FedAveragingClassifier(AllianceModel):
                 # Each member gets its own copy of the model
                 # partialModel = copy.deepcopy(self.current_global_model)
                 # self.alliance.members[indx].set_model()
-                print("Before set weights -- virtual memory used: ", psutil.virtual_memory()[2], "%")
+                # print("Before set weights -- virtual memory used: ", psutil.virtual_memory()[2], "%")
                 self.alliance.members[indx].model.set_weights(global_weights)
-                print("Before training -- virtual memory used: ", psutil.virtual_memory()[2], "%")
+                # print("Before training -- virtual memory used: ", psutil.virtual_memory()[2], "%")
 
                 self.alliance.members[indx].train(self.alliance.members[indx].model,nr_iter=parameters["nr_local_iterations"])
-                print("After training -- virtual memory used: ", psutil.virtual_memory()[2], "%")
+                # print("After training -- virtual memory used: ", psutil.virtual_memory()[2], "%")
 
                 # self.alliance.members[indx].train(partialModel,nr_iter=parameters["nr_local_iterations"])
                 round_models.append(self.alliance.members[indx].model)
-                print("After append model -- virtual memory used: ", psutil.virtual_memory()[2], "%")
+                # print("After append model -- virtual memory used: ", psutil.virtual_memory()[2], "%")
 
 
             # Average the model updates  - here  we have a global synchronization step. Server should aggregate
@@ -510,11 +510,11 @@ class AllianceMember(object):
 
     def train(self, partialModel, nr_iter=1):
         """ Update global model by training nr_iter iterations on local training data. """
-        print("start train -- virtual memory used: ", psutil.virtual_memory()[2], "%")
+        # print("start train -- virtual memory used: ", psutil.virtual_memory()[2], "%")
 
         for j in range(nr_iter):
             train_index = np.random.permutation(len(self.__x_train))
-            print("after train_index -- virtual memory used: ", psutil.virtual_memory()[2], "%")
+            # print("after train_index -- virtual memory used: ", psutil.virtual_memory()[2], "%")
 
             partialModel.partial_fit(self.__x_train[train_index],self.__y_train[train_index],classes=self.classes)
 

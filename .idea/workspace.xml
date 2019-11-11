@@ -2,6 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="fa5be9ab-e33f-4f24-9fa0-0a791864d48f" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cifarmodel.py" beforeDir="false" afterPath="$PROJECT_DIR$/cifarmodel.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/fedml.py" beforeDir="false" afterPath="$PROJECT_DIR$/fedml.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -12,11 +14,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/fedml.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="310">
-              <caret line="560" column="62" selection-start-line="560" selection-start-column="62" selection-end-line="560" selection-end-column="62" />
+            <state relative-caret-position="378">
+              <caret line="304" column="12" selection-start-line="304" selection-start-column="12" selection-end-line="304" selection-end-column="12" />
               <folding>
                 <element signature="e#0#35#0" expanded="true" />
               </folding>
@@ -24,11 +26,11 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/cifarmodel.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-398">
-              <caret line="86" selection-start-line="86" selection-end-line="86" />
+            <state relative-caret-position="401">
+              <caret line="76" lean-forward="true" selection-start-line="76" selection-end-line="76" />
               <folding>
                 <element signature="e#0#29#0" expanded="true" />
               </folding>
@@ -51,6 +53,8 @@
       <find>summary</find>
       <find>get_w</find>
       <find>compute_err</find>
+      <find>print</find>
+      <find>virtual memory used</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -59,8 +63,8 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/cifarmodel.py" />
         <option value="$PROJECT_DIR$/fedml.py" />
+        <option value="$PROJECT_DIR$/cifarmodel.py" />
       </list>
     </option>
   </component>
@@ -250,7 +254,28 @@
       <option name="project" value="LOCAL" />
       <updated>1573476637733</updated>
     </task>
-    <option name="localTasksCounter" value="20" />
+    <task id="LOCAL-00020" summary="debugging memory leaks in fedml.py">
+      <created>1573478578665</created>
+      <option name="number" value="00020" />
+      <option name="presentableId" value="LOCAL-00020" />
+      <option name="project" value="LOCAL" />
+      <updated>1573478578665</updated>
+    </task>
+    <task id="LOCAL-00021" summary="debugging memory leaks in fedml.py">
+      <created>1573478649129</created>
+      <option name="number" value="00021" />
+      <option name="presentableId" value="LOCAL-00021" />
+      <option name="project" value="LOCAL" />
+      <updated>1573478649129</updated>
+    </task>
+    <task id="LOCAL-00022" summary="debugging memory leaks in fedml.py">
+      <created>1573478981773</created>
+      <option name="number" value="00022" />
+      <option name="presentableId" value="LOCAL-00022" />
+      <option name="project" value="LOCAL" />
+      <updated>1573478981773</updated>
+    </task>
+    <option name="localTasksCounter" value="23" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -282,22 +307,22 @@
     <option name="LAST_COMMIT_MESSAGE" value="debugging memory leaks in fedml.py" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/cifarmodel.py">
+    <entry file="file://$PROJECT_DIR$/fedml.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-398">
-          <caret line="86" selection-start-line="86" selection-end-line="86" />
+        <state relative-caret-position="378">
+          <caret line="304" column="12" selection-start-line="304" selection-start-column="12" selection-end-line="304" selection-end-column="12" />
           <folding>
-            <element signature="e#0#29#0" expanded="true" />
+            <element signature="e#0#35#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/fedml.py">
+    <entry file="file://$PROJECT_DIR$/cifarmodel.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="310">
-          <caret line="560" column="62" selection-start-line="560" selection-start-column="62" selection-end-line="560" selection-end-column="62" />
+        <state relative-caret-position="401">
+          <caret line="76" lean-forward="true" selection-start-line="76" selection-end-line="76" />
           <folding>
-            <element signature="e#0#35#0" expanded="true" />
+            <element signature="e#0#29#0" expanded="true" />
           </folding>
         </state>
       </provider>
