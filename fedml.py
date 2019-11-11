@@ -294,11 +294,11 @@ class FedAveragingClassifier(AllianceModel):
         test_loss = []
 
         if not self.current_global_model:
-            self.current_global_model  = self.base_learner
+            self.current_global_model = self.base_learner
 
 
         for member in self.alliance.members:
-            member.set_model(self.current_global_model)
+            member.set_model(copy.deepcopy(self.current_global_model))
         #  Start training 
         for j in range(parameters["nr_global_iterations"]):
             print("global epoch: ", j)
