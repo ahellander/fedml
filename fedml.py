@@ -16,6 +16,8 @@ from random import sample
 import copy
 import  math
 import copy
+import psutil
+
 
 import keras
 # from fyrai.runtime.runtime import Runtime
@@ -296,11 +298,15 @@ class FedAveragingClassifier(AllianceModel):
 
         #  Start training 
         for j in range(parameters["nr_global_iterations"]):
+            print("global epoch: ", j)
+            print("virtual memory used: ", psutil.virtual_memory()[2], "%")
 
             round_models =[]
 
             # This step is a map operation - should happen in parallel/async
             rand_indx = np.random.permutation(len(self.alliance.members))
+
+
             for indx in rand_indx:
                 # Each member gets its own copy of the model
                 partialModel = copy.deepcopy(self.current_global_model)
