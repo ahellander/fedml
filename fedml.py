@@ -309,7 +309,7 @@ class FedAveragingClassifier(AllianceModel):
             # This step is a map operation - should happen in parallel/async
             rand_indx = np.random.permutation(len(self.alliance.members))
 
-            global_weights = self.current_global_model.get_weights()
+            global_weights = self.current_global_model.model.get_weights()
             for indx in rand_indx:
                 # Each member gets its own copy of the model
                 # partialModel = copy.deepcopy(self.current_global_model)
