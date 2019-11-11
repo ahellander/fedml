@@ -556,7 +556,7 @@ class AllianceMember(object):
         if partial_model is None:
             return 1;
         y_pred = partial_model.predict(self.__x_train)
-        validation = partial_model.model.validate(self.__x_train,self.__y_train)
+        validation = partial_model.model.evaluate(self.__x_train,self.__y_train)
         errRate = compute_errorRate(self.__y_train, y_pred)
         print("errRate: ", errRate, "validation: ", validation)
         return errRate
