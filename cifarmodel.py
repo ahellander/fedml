@@ -5,7 +5,7 @@ from keras.models import Sequential
 from keras.layers import Dense, Dropout, Activation, Flatten, BatchNormalization
 from keras.layers import Conv2D, MaxPooling2D
 import numpy as np
-
+import psutil
 
 
 def create_cifarmodel():
@@ -57,11 +57,14 @@ class KerasSequentialCifar(BaseLearner):
     @staticmethod
     def average_weights(models):
         """ fdfdsfs """
+        print("Before average weights -- virtual memory used: ", psutil.virtual_memory()[2], "%")
+
         weights = [model.model.get_weights() for model in models]
 
         avg_w = []
         for l in range(len(weights[0])):
             lay_l = np.array([w[l] for w in weights])
+            print("std layer ", l, ": ", np.std(lay_l))
             weight_l_avg = np.mean(lay_l,0)
             avg_w.append(weight_l_avg)
 
