@@ -65,7 +65,7 @@ class KerasSequentialCifar(BaseLearner):
         avg_w = []
         for l in range(len(weights[0])):
             lay_l = np.array([w[l] for w in weights])
-            print("std layer ", l, ": ", np.std(lay_l,0))
+            print("mean std layer ", l, ": ", np.mean(np.std(lay_l,0)))
             weight_l_avg = np.mean(lay_l,0)
             avg_w.append(weight_l_avg)
 
