@@ -331,13 +331,13 @@ class FedAveragingClassifier(AllianceModel):
             self.current_global_model.set_weights(weights)
             self.alliance.global_score_local_models()
             for member in self.alliance.members:
-                print("member global score: ", np.round(np.array(member.global_scorel),2))
+                print("member global score: ", np.round(np.array(member.global_score),2))
 
             #self.current_global_model = model
             
             # Training loss, mean error rate over all alliance training data
             training_loss.append(self.alliance.alliance_training_loss(self.current_global_model))
-            print("training loss: ", np.round(1-0.5*np.array(training_loss,2)))
+            print("training loss: ", np.round(1-0.5*Fnp.array(training_loss,2)))
 
             # Test loss, mean error rate on a  validation set
             try:
@@ -454,11 +454,12 @@ class Alliance(object):
         score_matrix = np.zeros((len(self.members),len(self.members)))
         for db_member in range(len(self.members)):
             for model_member in range(len(self.members)):
-                score_matrix[db_member,model_member] = self.members[db_member].scoreLocalData(self.members[model_member].model)
+                if db_member != model_member:
+                    score_matrix[db_member,model_member] = self.members[db_member].scoreLocalData(self.members[model_member].model)
 
         # score_matrix -= np.mean(score_matrix)
         for model_member in range(len(self.members)):
-            self.members[model_member].global_score.append(np.mean(score_matrix[:,model_member]))
+            self.members[model_member].global_score.append(np.sum(score_matrix[:,model_member])/len(self.members)-1)
 
 
 class AllianceMember(object):
