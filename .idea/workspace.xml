@@ -16,8 +16,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/fedml.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="446">
-              <caret line="339" column="52" selection-start-line="339" selection-start-column="52" selection-end-line="339" selection-end-column="52" />
+            <state relative-caret-position="123">
+              <caret line="339" column="78" lean-forward="true" selection-start-line="339" selection-start-column="78" selection-end-line="339" selection-end-column="78" />
               <folding>
                 <element signature="e#0#35#0" expanded="true" />
               </folding>
@@ -54,6 +54,7 @@
       <find>compute_err</find>
       <find>print</find>
       <find>virtual memory used</find>
+      <find>score_matr</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -358,7 +359,21 @@
       <option name="project" value="LOCAL" />
       <updated>1573520174541</updated>
     </task>
-    <option name="localTasksCounter" value="35" />
+    <task id="LOCAL-00035" summary="adding global score debugging">
+      <created>1573520341060</created>
+      <option name="number" value="00035" />
+      <option name="presentableId" value="LOCAL-00035" />
+      <option name="project" value="LOCAL" />
+      <updated>1573520341060</updated>
+    </task>
+    <task id="LOCAL-00036" summary="adding global score debugging">
+      <created>1573520927463</created>
+      <option name="number" value="00036" />
+      <option name="presentableId" value="LOCAL-00036" />
+      <option name="project" value="LOCAL" />
+      <updated>1573520927463</updated>
+    </task>
+    <option name="localTasksCounter" value="37" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -412,8 +427,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/fedml.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="446">
-          <caret line="339" column="52" selection-start-line="339" selection-start-column="52" selection-end-line="339" selection-end-column="52" />
+        <state relative-caret-position="123">
+          <caret line="339" column="78" lean-forward="true" selection-start-line="339" selection-start-column="78" selection-end-line="339" selection-end-column="78" />
           <folding>
             <element signature="e#0#35#0" expanded="true" />
           </folding>
