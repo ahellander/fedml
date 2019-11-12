@@ -4,6 +4,8 @@
     <list default="true" id="fa5be9ab-e33f-4f24-9fa0-0a791864d48f" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cifarmodel.py" beforeDir="false" afterPath="$PROJECT_DIR$/cifarmodel.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fedML_demo.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/fedML_demo.ipynb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fedml.py" beforeDir="false" afterPath="$PROJECT_DIR$/fedml.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -16,8 +18,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/fedml.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="480">
-              <caret line="542" column="40" lean-forward="true" selection-start-line="542" selection-start-column="40" selection-end-line="542" selection-end-column="40" />
+            <state relative-caret-position="259">
+              <caret line="534" column="22" selection-start-line="534" selection-start-column="22" selection-end-line="534" selection-end-column="22" />
               <folding>
                 <element signature="e#0#35#0" expanded="true" />
               </folding>
@@ -28,8 +30,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/cifarmodel.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="391">
-              <caret line="99" column="56" selection-start-line="99" selection-start-column="56" selection-end-line="99" selection-end-column="56" />
+            <state relative-caret-position="309">
+              <caret line="110" column="65" selection-start-line="110" selection-start-column="65" selection-end-line="110" selection-end-column="65" />
               <folding>
                 <element signature="e#0#29#0" expanded="true" />
               </folding>
@@ -405,7 +407,21 @@
       <option name="project" value="LOCAL" />
       <updated>1573563548794</updated>
     </task>
-    <option name="localTasksCounter" value="41" />
+    <task id="LOCAL-00041" summary="adding global score debugging">
+      <created>1573563887730</created>
+      <option name="number" value="00041" />
+      <option name="presentableId" value="LOCAL-00041" />
+      <option name="project" value="LOCAL" />
+      <updated>1573563887730</updated>
+    </task>
+    <task id="LOCAL-00042" summary="adding global score debugging">
+      <created>1573564657633</created>
+      <option name="number" value="00042" />
+      <option name="presentableId" value="LOCAL-00042" />
+      <option name="project" value="LOCAL" />
+      <updated>1573564657633</updated>
+    </task>
+    <option name="localTasksCounter" value="43" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -449,8 +465,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/fedml.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="480">
-          <caret line="542" column="40" lean-forward="true" selection-start-line="542" selection-start-column="40" selection-end-line="542" selection-end-column="40" />
+        <state relative-caret-position="259">
+          <caret line="534" column="22" selection-start-line="534" selection-start-column="22" selection-end-line="534" selection-end-column="22" />
           <folding>
             <element signature="e#0#35#0" expanded="true" />
           </folding>
@@ -459,8 +475,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/cifarmodel.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="391">
-          <caret line="99" column="56" selection-start-line="99" selection-start-column="56" selection-end-line="99" selection-end-column="56" />
+        <state relative-caret-position="309">
+          <caret line="110" column="65" selection-start-line="110" selection-start-column="65" selection-end-line="110" selection-end-column="65" />
           <folding>
             <element signature="e#0#29#0" expanded="true" />
           </folding>

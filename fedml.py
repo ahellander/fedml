@@ -531,16 +531,19 @@ class AllianceMember(object):
         # print("start train -- virtual memory used: ", psutil.virtual_memory()[2], "%")
 
         for j in range(nr_iter):
-            train_index = np.random.permutation(len(self.__x_train))
+            # train_index = np.random.permutation(len(self.__x_train))
             # print("after train_index -- virtual memory used: ", psutil.virtual_memory()[2], "%")
 
-            data_set_index, data_order = partialModel.partial_fit(x=self.__x_train[train_index],
-                                                                  y=self.__y_train[train_index],
+            data_set_index, data_order = partialModel.partial_fit(x=self.__x_train,
+                                                                  y=self.__y_train,
                                                                   classes=self.classes,
                                                                   data_set_index=self.data_set_index,
                                                                   data_order=self.data_order)
+            print("outside partial mode")
             self.data_set_index = data_set_index
             self.data_order = data_order
+            print("updated attributes")
+
 
     ### Predict ###
 
