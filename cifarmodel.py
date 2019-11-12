@@ -84,10 +84,10 @@ class KerasSequentialCifar(BaseLearner):
         return to_categorical(self.model.predict_classes(x), num_classes=10)
         # return self.model.predict(x)
 
-    def partial_fit(self, x, y, classes=None, data_set_index=0, data_order=None):
+    def partial_fit(self, x, y, data_order, classes=None, data_set_index=0):
         """ Do a partial fit. """
         # print("partial fit start -- virtual memory used: ", psutil.virtual_memory()[2], "%")
-
+        print("inside partial fit data order shape: ", data_order.shape)
         batch_size = 32
         epochs = 1
         data_augmentation = True
