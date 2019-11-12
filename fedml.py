@@ -331,14 +331,14 @@ class FedAveragingClassifier(AllianceModel):
             self.current_global_model.set_weights(weights)
             self.alliance.global_score_local_models()
             for member in self.alliance.members:
-                print("member global score: ", member.global_score)
+                print("member global score: ", np.round(np.array(member.global_scorel),2))
 
             #self.current_global_model = model
             
             # Training loss, mean error rate over all alliance training data
             training_loss.append(self.alliance.alliance_training_loss(self.current_global_model))
             # Test loss, mean error rate on a  validation set
-            print("training loss: ", training_loss)
+            print("training loss: ", np.round(np.array(training_loss,2)))
             try:
                 test_loss.append(self.alliance.alliance_test_loss(self.current_global_model))
                 # TODO: Implement early stopping
@@ -455,7 +455,7 @@ class Alliance(object):
             for model_member in range(len(self.members)):
                 score_matrix[db_member,model_member] = self.members[db_member].scoreLocalData(self.members[model_member].model)
 
-        score_matrix -= np.mean(score_matrix)
+        # score_matrix -= np.mean(score_matrix)
         for model_member in range(len(self.members)):
             self.members[model_member].global_score.append(np.mean(score_matrix[:,model_member]))
 
