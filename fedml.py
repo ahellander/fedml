@@ -459,7 +459,7 @@ class Alliance(object):
 
         # score_matrix -= np.mean(score_matrix)
         for model_member in range(len(self.members)):
-            self.members[model_member].global_score.append(np.sum(1-0.5*np.array(score_matrix[:,model_member]))/(len(self.members)-1))
+            self.members[model_member].global_score.append(1-0.5*np.sum(np.array(score_matrix[:,model_member]))/(len(self.members)-1))
 
 
 class AllianceMember(object):
