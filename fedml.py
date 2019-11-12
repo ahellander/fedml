@@ -528,7 +528,6 @@ class AllianceMember(object):
 
     def train(self, partialModel, nr_iter=1):
         """ Update global model by training nr_iter iterations on local training data. """
-        # print("start train -- virtual memory used: ", psutil.virtual_memory()[2], "%")
 
         for j in range(nr_iter):
             # train_index = np.random.permutation(len(self.__x_train))
@@ -539,10 +538,8 @@ class AllianceMember(object):
                                                                   classes=self.classes,
                                                                   data_set_index=self.data_set_index,
                                                                   data_order=self.data_order)
-            print("outside partial mode")
             self.data_set_index = data_set_index
             self.data_order = data_order
-            print("updated attributes")
 
 
     ### Predict ###
