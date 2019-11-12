@@ -477,6 +477,8 @@ class AllianceMember(object):
         self.loss = 'hinge'
         self.classes = classes
         self.global_score = []
+        self.data_set_index = 0
+        self.data_order = np.arange(len(x_train))
 
     def get_model(self):
         if self.model is None:
@@ -532,8 +534,13 @@ class AllianceMember(object):
             train_index = np.random.permutation(len(self.__x_train))
             # print("after train_index -- virtual memory used: ", psutil.virtual_memory()[2], "%")
 
-            partialModel.partial_fit(self.__x_train[train_index],self.__y_train[train_index],classes=self.classes)
-
+            data_set_index, data_order = partialModel.partial_fit(x=self.__x_train[train_index],
+                                                                  y=self.__y_train[train_index],
+                                                                  classes=self.classes,
+                                                                  data_set_index=self.data_set_index,
+                                                                  data_order=self.data_order)
+            self.data_set_index = data_set_index
+            self.data_order = data_order
 
     ### Predict ###
 
