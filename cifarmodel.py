@@ -97,7 +97,8 @@ class KerasSequentialCifar(BaseLearner):
             batch_size = x.shape[0]
 
         if training_steps is not None:
-            data_order = np.arange(x.shape[0])
+            print("data order shape: ", data_order.shape)
+            #data_order = np.arange(x.shape[0])
             epochs = 1
             start_ind = data_set_index
             end_ind = start_ind + batch_size * training_steps
