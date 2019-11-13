@@ -296,7 +296,7 @@ class FedAveragingClassifier(AllianceModel):
         if not self.current_global_model:
             self.current_global_model = self.base_learner
 
-
+        w_stds = []
         for member in self.alliance.members:
             member.set_model(copy.deepcopy(self.current_global_model))
         #  Start training 
@@ -327,7 +327,8 @@ class FedAveragingClassifier(AllianceModel):
 
 
             # Average the model updates  - here  we have a global synchronization step. Server should aggregate
-            weights = self.current_global_model.average_weights(round_models)
+            weights, weights_std = self.current_global_model.average_weights(round_models)
+            w_stds.append(weights_std)
             self.current_global_model.set_weights(weights)
             self.alliance.global_score_local_models()
             for member in self.alliance.members:
@@ -346,7 +347,7 @@ class FedAveragingClassifier(AllianceModel):
             except:
                 pass
 
-        return training_loss, test_loss  
+        return training_loss, w_stds
 
     def predict(self,x_test):
         """ fdfsd """ 
@@ -581,7 +582,7 @@ class AllianceMember(object):
         y_pred = partial_model.predict(self.__x_train)
         validation = partial_model.model.evaluate(self.__x_train,self.__y_train)
         errRate = compute_errorRate(self.__y_train, y_pred)
-        print("errRate: ", errRate, "validation: ", validation)
+        # print("errRate: ", errRate, "validation: ", validation)
         return errRate
 
 

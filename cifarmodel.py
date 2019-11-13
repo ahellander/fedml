@@ -73,8 +73,8 @@ class KerasSequentialCifar(BaseLearner):
             weight_l_avg = np.mean(lay_l,0)
             avg_w.append(weight_l_avg)
         mean_avg = np.mean(np.array(avg_std))
-        print("mean avg: ", mean_avg)
-        return avg_w
+        print("weights mean std: ", mean_avg)
+        return avg_w, mean_avg
 
     def set_weights(self,weights):
         self.model.set_weights(weights)
@@ -96,8 +96,6 @@ class KerasSequentialCifar(BaseLearner):
             batch_size = x.shape[0]
 
         if training_steps is not None:
-            print("data order shape: ", data_order.shape)
-            #data_order = np.arange(x.shape[0])
             epochs = 1
             start_ind = data_set_index
             end_ind = start_ind + batch_size * training_steps
@@ -160,7 +158,8 @@ class KerasSequentialCifar(BaseLearner):
             # print("before training(inside partial fit after datagen) -- virtual memory used: ", psutil.virtual_memory()[2], "%")
             self.model.fit_generator(self.datagen.flow(x[ind], y[ind],
                                                        batch_size=batch_size),
-                                          epochs=epochs,
-                                          workers=4)
+                                                       epochs=epochs,
+                                                       workers=4,
+                                                       shuffle=False)
             return data_set_index, data_order
 
