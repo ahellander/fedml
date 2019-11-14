@@ -462,12 +462,13 @@ class Alliance(object):
         # score_matrix -= np.mean(score_matrix)
         for db_member in range(len(self.members)):
             model_members = list(set(np.arange(len(self.members))) - set([db_member]))
-            print("model members ind: ", model_members)
+            # print("model members ind: ", model_members)
             mean_score = np.mean(score_matrix[db_member,model_members])
             score_matrix[db_member,model_members] = score_matrix[db_member,model_members] - mean_score
 
         for model_member in range(len(self.members)):
-            self.members[model_member].global_score.append(1-0.5*np.sum(np.array(score_matrix[:,model_member]))/(len(self.members)-1))
+            db_members = list(set(np.arange(len(self.members))) - set([model_member]))
+            self.members[model_member].global_score.append(np.mean(np.array(score_matrix[db_members,model_member])))
 
 
 class AllianceMember(object):
@@ -589,9 +590,9 @@ class AllianceMember(object):
             return 1;
         y_pred = partial_model.predict(self.__x_train)
         # validation = partial_model.model.evaluate(self.__x_train,self.__y_train)
-        errRate = compute_errorRate(self.__y_train, y_pred)
+        errRate = compute_errorRate(self.__y_train, y_pred)/2
         # print("errRate: ", errRate, "validation: ", validation)
-        return errRate
+        return 1 - errRate
 
 
 def _split_and_scale(x,y,test_size=0.2):
