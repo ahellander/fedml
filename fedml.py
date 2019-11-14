@@ -461,7 +461,8 @@ class Alliance(object):
 
         # score_matrix -= np.mean(score_matrix)
         for db_member in range(len(self.members)):
-            model_members = set(np.arange(len(self.members))) - set([db_member])
+            model_members = list(set(np.arange(len(self.members))) - set([db_member]))
+            print("model members ind: ", model_members)
             mean_score = np.mean(score_matrix[db_member,model_members])
             score_matrix[db_member,model_members] = score_matrix[db_member,model_members] - mean_score
 
@@ -587,7 +588,7 @@ class AllianceMember(object):
         if partial_model is None:
             return 1;
         y_pred = partial_model.predict(self.__x_train)
-        validation = partial_model.model.evaluate(self.__x_train,self.__y_train)
+        # validation = partial_model.model.evaluate(self.__x_train,self.__y_train)
         errRate = compute_errorRate(self.__y_train, y_pred)
         # print("errRate: ", errRate, "validation: ", validation)
         return errRate
