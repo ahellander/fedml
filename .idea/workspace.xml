@@ -3,6 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="fa5be9ab-e33f-4f24-9fa0-0a791864d48f" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fedml.py" beforeDir="false" afterPath="$PROJECT_DIR$/fedml.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -15,8 +16,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/fedml.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="327">
-              <caret line="338" column="12" lean-forward="true" selection-start-line="338" selection-start-column="12" selection-end-line="338" selection-end-column="12" />
+            <state relative-caret-position="-166">
+              <caret line="299" selection-start-line="299" selection-end-line="299" />
               <folding>
                 <element signature="e#0#35#0" expanded="true" />
               </folding>
@@ -27,8 +28,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/cifarmodel.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="390">
-              <caret line="105" column="29" selection-start-line="105" selection-start-column="29" selection-end-line="105" selection-end-column="29" />
+            <state relative-caret-position="509">
+              <caret line="85" lean-forward="true" selection-start-line="85" selection-end-line="85" />
               <folding>
                 <element signature="e#0#29#0" expanded="true" />
               </folding>
@@ -59,11 +60,12 @@
       <find>data order</find>
       <find>allianceM</find>
       <find>data_s</find>
-      <find>global_score_lo</find>
       <find>global_score</find>
       <find>score_local</find>
       <find>scoreLocalDa</find>
       <find>compute_er</find>
+      <find>scoreLo</find>
+      <find>global_score_lo</find>
     </findStrings>
     <replaceStrings>
       <replace>data_order</replace>
@@ -135,13 +137,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1573305871409</updated>
-    </task>
-    <task id="LOCAL-00005" summary="added kerasbaselearner2">
-      <created>1573470733718</created>
-      <option name="number" value="00005" />
-      <option name="presentableId" value="LOCAL-00005" />
-      <option name="project" value="LOCAL" />
-      <updated>1573470733718</updated>
     </task>
     <task id="LOCAL-00006" summary="debugging memory leaks in fedml.py">
       <created>1573471381287</created>
@@ -479,7 +474,14 @@
       <option name="project" value="LOCAL" />
       <updated>1573749130428</updated>
     </task>
-    <option name="localTasksCounter" value="54" />
+    <task id="LOCAL-00054" summary="fixing output text">
+      <created>1573749626343</created>
+      <option name="number" value="00054" />
+      <option name="presentableId" value="LOCAL-00054" />
+      <option name="project" value="LOCAL" />
+      <updated>1573749626343</updated>
+    </task>
+    <option name="localTasksCounter" value="55" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -511,7 +513,8 @@
     <MESSAGE value="adding global score" />
     <MESSAGE value="adding global score 2" />
     <MESSAGE value="adding global score debugging" />
-    <option name="LAST_COMMIT_MESSAGE" value="adding global score debugging" />
+    <MESSAGE value="fixing output text" />
+    <option name="LAST_COMMIT_MESSAGE" value="fixing output text" />
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/utils.py">
@@ -523,8 +526,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/cifarmodel.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="390">
-          <caret line="105" column="29" selection-start-line="105" selection-start-column="29" selection-end-line="105" selection-end-column="29" />
+        <state relative-caret-position="509">
+          <caret line="85" lean-forward="true" selection-start-line="85" selection-end-line="85" />
           <folding>
             <element signature="e#0#29#0" expanded="true" />
           </folding>
@@ -533,8 +536,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/fedml.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="327">
-          <caret line="338" column="12" lean-forward="true" selection-start-line="338" selection-start-column="12" selection-end-line="338" selection-end-column="12" />
+        <state relative-caret-position="-166">
+          <caret line="299" selection-start-line="299" selection-end-line="299" />
           <folding>
             <element signature="e#0#35#0" expanded="true" />
           </folding>

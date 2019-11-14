@@ -284,6 +284,7 @@ class FedAveragingClassifier(AllianceModel):
         self.base_learner = base_learner
         self.current_global_model = None
         self.default_parameters = {"nr_global_iterations":100, "nr_local_iterations":1}
+        self.weights_std = []
 
         super().__init__(alliance)
 
@@ -296,7 +297,6 @@ class FedAveragingClassifier(AllianceModel):
         if not self.current_global_model:
             self.current_global_model = self.base_learner
 
-        w_stds = []
         for member in self.alliance.members:
             member.set_model(copy.deepcopy(self.current_global_model))
         #  Start training 
@@ -328,7 +328,7 @@ class FedAveragingClassifier(AllianceModel):
 
             # Average the model updates  - here  we have a global synchronization step. Server should aggregate
             weights, weights_std = self.current_global_model.average_weights(round_models)
-            w_stds.append(weights_std)
+            self.w_std.append(weights_std)
             self.current_global_model.set_weights(weights)
             self.alliance.global_score_local_models()
             for member in self.alliance.members:
