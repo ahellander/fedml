@@ -328,7 +328,7 @@ class FedAveragingClassifier(AllianceModel):
 
             # Average the model updates  - here  we have a global synchronization step. Server should aggregate
             weights, weights_std = self.current_global_model.average_weights(round_models)
-            self.w_std.append(weights_std)
+            self.weights_std.append(weights_std)
             self.current_global_model.set_weights(weights)
             self.alliance.global_score_local_models()
             for member in self.alliance.members:
