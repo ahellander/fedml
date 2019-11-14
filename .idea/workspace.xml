@@ -2,7 +2,6 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="fa5be9ab-e33f-4f24-9fa0-0a791864d48f" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/fedml.py" beforeDir="false" afterPath="$PROJECT_DIR$/fedml.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -16,8 +15,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/fedml.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="412">
-              <caret line="467" lean-forward="true" selection-start-line="467" selection-end-line="467" />
+            <state relative-caret-position="378">
+              <caret line="470" column="115" selection-start-line="470" selection-start-column="115" selection-end-line="470" selection-end-column="115" />
               <folding>
                 <element signature="e#0#35#0" expanded="true" />
               </folding>
@@ -62,6 +61,9 @@
       <find>data_s</find>
       <find>global_score_lo</find>
       <find>global_score</find>
+      <find>score_local</find>
+      <find>scoreLocalDa</find>
+      <find>compute_er</find>
     </findStrings>
     <replaceStrings>
       <replace>data_order</replace>
@@ -467,7 +469,14 @@
       <option name="project" value="LOCAL" />
       <updated>1573728263825</updated>
     </task>
-    <option name="localTasksCounter" value="49" />
+    <task id="LOCAL-00049" summary="adding global score debugging">
+      <created>1573730269441</created>
+      <option name="number" value="00049" />
+      <option name="presentableId" value="LOCAL-00049" />
+      <option name="project" value="LOCAL" />
+      <updated>1573730269441</updated>
+    </task>
+    <option name="localTasksCounter" value="50" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -521,8 +530,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/fedml.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="412">
-          <caret line="467" lean-forward="true" selection-start-line="467" selection-end-line="467" />
+        <state relative-caret-position="378">
+          <caret line="470" column="115" selection-start-line="470" selection-start-column="115" selection-end-line="470" selection-end-column="115" />
           <folding>
             <element signature="e#0#35#0" expanded="true" />
           </folding>

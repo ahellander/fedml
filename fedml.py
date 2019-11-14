@@ -333,13 +333,13 @@ class FedAveragingClassifier(AllianceModel):
             self.alliance.global_score_local_models()
             for member in self.alliance.members:
                 print("member size ", member.data_size, " global score: ", np.round(np.array(member.global_score),2),
-                      np.mean(np.array(member.global_score)))
+                      np.round(np.mean(np.array(member.global_score)),3))
 
             #self.current_global_model = model
             
             # Training loss, mean error rate over all alliance training data
             training_loss.append(self.alliance.alliance_training_loss(self.current_global_model))
-            print("training loss: ", np.round(1-0.5*np.array(training_loss),2))
+            print("training loss: ", np.round(np.array(training_loss),3))
 
             # Test loss, mean error rate on a  validation set
             try:
