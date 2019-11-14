@@ -103,6 +103,7 @@ class KerasSequentialCifar(BaseLearner):
             while end_ind > x.shape[0]:
                 end_ind = end_ind - x.shape[0]
                 ind += list(data_order[np.arange(start_ind, x.shape[0])])
+                start_ind = 0
                 data_order = np.random.permutation(x.shape[0])
 
             ind += list(data_order[np.arange(start_ind,end_ind)])

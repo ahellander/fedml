@@ -332,7 +332,7 @@ class FedAveragingClassifier(AllianceModel):
             self.current_global_model.set_weights(weights)
             self.alliance.global_score_local_models()
             for member in self.alliance.members:
-                print("member global score: ", np.round(np.array(member.global_score),2))
+                print("member size ", member.data_size, " global score: ", np.round(np.array(member.global_score),2))
 
             #self.current_global_model = model
             
@@ -459,6 +459,10 @@ class Alliance(object):
                     score_matrix[db_member,model_member] = self.members[db_member].scoreLocalData(self.members[model_member].model)
 
         # score_matrix -= np.mean(score_matrix)
+        for db_member in range(len(self.members)):
+            mean_score = np.mean(score_matrix[db_member,:])
+            score_matrix[db_member] - mean_score
+
         for model_member in range(len(self.members)):
             self.members[model_member].global_score.append(1-0.5*np.sum(np.array(score_matrix[:,model_member]))/(len(self.members)-1))
 
@@ -480,6 +484,7 @@ class AllianceMember(object):
         self.global_score = []
         self.data_set_index = 0
         self.data_order = np.arange(len(x_train))
+        self.data_size = len(x_train)
 
     def get_model(self):
         if self.model is None:
