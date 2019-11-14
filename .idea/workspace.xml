@@ -15,8 +15,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/fedml.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="378">
-              <caret line="470" column="115" selection-start-line="470" selection-start-column="115" selection-end-line="470" selection-end-column="115" />
+            <state relative-caret-position="344">
+              <caret line="341" column="11" selection-start-line="341" selection-start-column="11" selection-end-line="341" selection-end-column="11" />
               <folding>
                 <element signature="e#0#35#0" expanded="true" />
               </folding>
@@ -132,20 +132,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1573305871409</updated>
-    </task>
-    <task id="LOCAL-00001" summary="added kerasbaselearner2">
-      <created>1573306496402</created>
-      <option name="number" value="00001" />
-      <option name="presentableId" value="LOCAL-00001" />
-      <option name="project" value="LOCAL" />
-      <updated>1573306496403</updated>
-    </task>
-    <task id="LOCAL-00002" summary="added kerasbaselearner2">
-      <created>1573309371841</created>
-      <option name="number" value="00002" />
-      <option name="presentableId" value="LOCAL-00002" />
-      <option name="project" value="LOCAL" />
-      <updated>1573309371841</updated>
     </task>
     <task id="LOCAL-00003" summary="added kerasbaselearner2">
       <created>1573462157055</created>
@@ -476,7 +462,21 @@
       <option name="project" value="LOCAL" />
       <updated>1573730269441</updated>
     </task>
-    <option name="localTasksCounter" value="50" />
+    <task id="LOCAL-00050" summary="adding global score debugging">
+      <created>1573731985649</created>
+      <option name="number" value="00050" />
+      <option name="presentableId" value="LOCAL-00050" />
+      <option name="project" value="LOCAL" />
+      <updated>1573731985649</updated>
+    </task>
+    <task id="LOCAL-00051" summary="adding global score debugging">
+      <created>1573732070703</created>
+      <option name="number" value="00051" />
+      <option name="presentableId" value="LOCAL-00051" />
+      <option name="project" value="LOCAL" />
+      <updated>1573732070703</updated>
+    </task>
+    <option name="localTasksCounter" value="52" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -530,8 +530,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/fedml.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="378">
-          <caret line="470" column="115" selection-start-line="470" selection-start-column="115" selection-end-line="470" selection-end-column="115" />
+        <state relative-caret-position="344">
+          <caret line="341" column="11" selection-start-line="341" selection-start-column="11" selection-end-line="341" selection-end-column="11" />
           <folding>
             <element signature="e#0#35#0" expanded="true" />
           </folding>
