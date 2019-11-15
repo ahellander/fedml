@@ -376,7 +376,7 @@ class FedAveragingClassifier(AllianceModel):
             for member in self.alliance.members:
                 print("member size ", member.data_size, " weights spread: ", member.weights_spread)
 
-            print("---------------------------------------------------------")
+            print("---------------------------------------------------------__")
 
                 # Training loss, mean error rate over all alliance training data
             training_loss.append(self.alliance.alliance_training_loss(self.current_global_model))
