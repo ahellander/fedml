@@ -84,13 +84,13 @@ class KerasSequentialCifar(BaseLearner):
         return to_categorical(self.model.predict_classes(x), num_classes=10)
         # return self.model.predict(x)
 
-    def partial_fit(self, x, y, data_order, classes=None, data_set_index=0):
+    def partial_fit(self, x, y, data_order, classes=None, data_set_index=0, training_steps=None):
         """ Do a partial fit. """
         # print("partial fit start -- virtual memory used: ", psutil.virtual_memory()[2], "%")
         batch_size = 32
         epochs = 1
         data_augmentation = True
-        training_steps = 1000
+        # training_steps = 1000
 
         if batch_size == "inf":
             batch_size = x.shape[0]

@@ -283,7 +283,7 @@ class FedAveragingClassifier(AllianceModel):
                                             alpha=alpha, max_iter=100,  warm_start=False)
         self.base_learner = base_learner
         self.current_global_model = None
-        self.default_parameters = {"nr_global_iterations":100, "nr_local_iterations":1}
+        self.default_parameters = {"nr_global_iterations":100, "nr_local_iterations":1, "training_steps":None}
         self.weights_std = []
         self.test_loss = []
 
@@ -319,7 +319,9 @@ class FedAveragingClassifier(AllianceModel):
                 self.alliance.members[indx].model.set_weights(global_weights)
                 # print("Before training -- virtual memory used: ", psutil.virtual_memory()[2], "%")
 
-                self.alliance.members[indx].train(self.alliance.members[indx].model,nr_iter=parameters["nr_local_iterations"])
+                self.alliance.members[indx].train(self.alliance.members[indx].model,
+                                                  nr_iter=parameters["nr_local_iterations"],
+                                                  training_steps=parameters["training_steps"])
                 # print("After training -- virtual memory used: ", psutil.virtual_memory()[2], "%")
 
                 # self.alliance.members[indx].train(partialModel,nr_iter=parameters["nr_local_iterations"])
@@ -336,6 +338,11 @@ class FedAveragingClassifier(AllianceModel):
             for member in self.alliance.members:
                 print("member size ", member.data_size, " global score: ", np.round(np.array(member.global_score),2),
                       ", total score: ", np.round(np.sum(np.array(member.global_score)),3))
+
+            for member in self.alliance.members:
+                print("member size ", member.data_size, " global score: ",
+                      np.round(np.array(member.score_test_set), 2),
+                      ", total score: ", np.round(np.sum(np.array(member.score_test_set)), 3))
 
 
             # Training loss, mean error rate over all alliance training data
@@ -543,7 +550,7 @@ class AllianceMember(object):
 
         return self.model
 
-    def train(self, partialModel, nr_iter=1):
+    def train(self, partialModel, nr_iter=1, training_steps=None):
         """ Update global model by training nr_iter iterations on local training data. """
 
         for j in range(nr_iter):
@@ -554,7 +561,8 @@ class AllianceMember(object):
                                                                   y=self.__y_train,
                                                                   classes=self.classes,
                                                                   data_set_index=self.data_set_index,
-                                                                  data_order=self.data_order)
+                                                                  data_order=self.data_order,
+                                                                  training_steps=training_steps)
             self.data_set_index = data_set_index
             self.data_order = data_order
 
