@@ -370,7 +370,8 @@ class FedAveragingClassifier(AllianceModel):
 
             print("---------------------------------------------------------")
 
-            print("delta global weights: ", [np.format_float_scientific(mdw,2) for mdw in self.alliance.delta_glob_weights))
+            print("delta global weights: ",
+                  [np.format_float_scientific(dgw,2) for dgw in self.alliance.delta_glob_weights])
 
                 # Training loss, mean error rate over all alliance training data
             training_loss.append(self.alliance.alliance_training_loss(self.current_global_model))
