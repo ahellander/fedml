@@ -733,8 +733,8 @@ def run_FedAveraging(x,y,M,parameters=None,n_repeats = 1):
 def weights_dist(weights1, weights2):
     delta_w = []
     for w1, w2 in zip(weights1, weights2):
-        delta_w.append(np.mean(abs(w1 - w1)))
-        print("delta_w shape: ", abs(w1 - w2).shape)
+        delta_w.append(np.mean(abs(w1 - w2)))
+        # print("delta_w shape: ", abs(w1 - w2).shape)
 
     return np.mean(np.array(delta_w))
 
