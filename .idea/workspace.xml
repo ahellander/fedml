@@ -16,8 +16,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/fedml.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="327">
-              <caret line="372" column="124" selection-start-line="372" selection-start-column="124" selection-end-line="372" selection-end-column="124" />
+            <state relative-caret-position="305">
+              <caret line="736" column="51" selection-start-line="736" selection-start-column="51" selection-end-line="736" selection-end-column="51" />
               <folding>
                 <element signature="e#0#35#0" expanded="true" />
               </folding>
@@ -28,7 +28,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/cifarmodel.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="798">
+            <state relative-caret-position="628">
               <caret line="93" lean-forward="true" selection-start-line="93" selection-end-line="93" />
               <folding>
                 <element signature="e#0#29#0" expanded="true" />
@@ -66,8 +66,9 @@
       <find>w_std</find>
       <find>print</find>
       <find>global_score</find>
-      <find>global_score_lo</find>
       <find>print(&quot;----</find>
+      <find>def weigh</find>
+      <find>global_score_lo</find>
     </findStrings>
     <replaceStrings>
       <replace>data_order</replace>
@@ -139,20 +140,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1573305871409</updated>
-    </task>
-    <task id="LOCAL-00016" summary="debugging memory leaks in fedml.py">
-      <created>1573474679104</created>
-      <option name="number" value="00016" />
-      <option name="presentableId" value="LOCAL-00016" />
-      <option name="project" value="LOCAL" />
-      <updated>1573474679104</updated>
-    </task>
-    <task id="LOCAL-00017" summary="debugging memory leaks in fedml.py">
-      <created>1573475391353</created>
-      <option name="number" value="00017" />
-      <option name="presentableId" value="LOCAL-00017" />
-      <option name="project" value="LOCAL" />
-      <updated>1573475391353</updated>
     </task>
     <task id="LOCAL-00018" summary="debugging memory leaks in fedml.py">
       <created>1573476557829</created>
@@ -483,7 +470,21 @@
       <option name="project" value="LOCAL" />
       <updated>1573830199169</updated>
     </task>
-    <option name="localTasksCounter" value="65" />
+    <task id="LOCAL-00065" summary="added weight update statistics">
+      <created>1573843069333</created>
+      <option name="number" value="00065" />
+      <option name="presentableId" value="LOCAL-00065" />
+      <option name="project" value="LOCAL" />
+      <updated>1573843069334</updated>
+    </task>
+    <task id="LOCAL-00066" summary="added weight update statistics">
+      <created>1573843390326</created>
+      <option name="number" value="00066" />
+      <option name="presentableId" value="LOCAL-00066" />
+      <option name="project" value="LOCAL" />
+      <updated>1573843390326</updated>
+    </task>
+    <option name="localTasksCounter" value="67" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -529,7 +530,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/cifarmodel.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="798">
+        <state relative-caret-position="628">
           <caret line="93" lean-forward="true" selection-start-line="93" selection-end-line="93" />
           <folding>
             <element signature="e#0#29#0" expanded="true" />
@@ -539,8 +540,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/fedml.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="327">
-          <caret line="372" column="124" selection-start-line="372" selection-start-column="124" selection-end-line="372" selection-end-column="124" />
+        <state relative-caret-position="305">
+          <caret line="736" column="51" selection-start-line="736" selection-start-column="51" selection-end-line="736" selection-end-column="51" />
           <folding>
             <element signature="e#0#35#0" expanded="true" />
           </folding>
