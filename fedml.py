@@ -285,6 +285,8 @@ class FedAveragingClassifier(AllianceModel):
         self.current_global_model = None
         self.default_parameters = {"nr_global_iterations":100, "nr_local_iterations":1}
         self.weights_std = []
+        self.test_loss = []
+
 
         super().__init__(alliance)
 
@@ -292,7 +294,6 @@ class FedAveragingClassifier(AllianceModel):
     def fit(self, parameters=None):
         """  """
         training_loss = []
-        test_loss = []
 
         if not self.current_global_model:
             self.current_global_model = self.base_learner
@@ -331,9 +332,11 @@ class FedAveragingClassifier(AllianceModel):
             self.weights_std.append(weights_std)
             self.current_global_model.set_weights(weights)
             self.alliance.global_score_local_models()
+            # self.score_test_set.append(self.alliance_test_loss(self.))
             for member in self.alliance.members:
                 print("member size ", member.data_size, " global score: ", np.round(np.array(member.global_score),2),
                       ", total score: ", np.round(np.sum(np.array(member.global_score)),3))
+
 
             # Training loss, mean error rate over all alliance training data
             training_loss.append(self.alliance.alliance_training_loss(self.current_global_model))
@@ -341,12 +344,13 @@ class FedAveragingClassifier(AllianceModel):
 
             # Test loss, mean error rate on a  validation set
             try:
-                test_loss.append(self.alliance.alliance_test_loss(self.current_global_model))
+                self.test_loss.append(self.alliance.alliance_test_loss(self.current_global_model))
+                print("test_loss: ", np.round(np.array(self.test_loss),2))
                 # TODO: Implement early stopping
             except:
                 pass
 
-        return training_loss, w_stds
+        return training_loss, self.weights_std
 
     def predict(self,x_test):
         """ fdfsd """ 
@@ -427,7 +431,7 @@ class Alliance(object):
         """ Use alliance global validation data.  """
         y_pred = alliance_model.predict(self.x_test)
         error_rate = compute_errorRate(self.y_test, y_pred)
-        return  error_rate
+        return  1 - error_rate/2
 
     def errRateGlobalModel(self, x_test, y_test,model=None):
         if not model:
@@ -451,6 +455,10 @@ class Alliance(object):
         return errRate
 
     def global_score_local_models(self):
+
+        for model_member in range(len(self.members)):
+            self.members[model_member].score_test_set.append(self.alliance_test_loss(self.members[model_member].model))
+
         score_matrix = np.zeros((len(self.members),len(self.members)))
         for db_member in range(len(self.members)):
             for model_member in range(len(self.members)):
@@ -487,6 +495,7 @@ class AllianceMember(object):
         self.data_set_index = 0
         self.data_order = np.arange(len(x_train))
         self.data_size = len(x_train)
+        self.score_test_set = []
 
     def get_model(self):
         if self.model is None:
@@ -588,9 +597,9 @@ class AllianceMember(object):
             return 1;
         y_pred = partial_model.predict(self.__x_train)
         # validation = partial_model.model.evaluate(self.__x_train,self.__y_train)
-        errRate = compute_errorRate(self.__y_train, y_pred)/2
+        errRate = compute_errorRate(self.__y_train, y_pred)
         # print("errRate: ", errRate, "validation: ", validation)
-        return 1 - errRate
+        return 1 - errRate/2
 
 
 def _split_and_scale(x,y,test_size=0.2):
