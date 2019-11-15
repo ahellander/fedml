@@ -359,16 +359,18 @@ class FedAveragingClassifier(AllianceModel):
             print("---------------------------------------------------------")
 
             for member in self.alliance.members:
-                print("member size ", member.data_size, " delta weights: ", np.round(np.array(member.delta_weights),2))
+                print("member size ", member.data_size, " delta weights: ",
+                      [np.format_float_scientific(mdw,2) for mdw in member.delta_weights])
 
             print("---------------------------------------------------------")
 
             for member in self.alliance.members:
-                print("member size ", member.data_size, " weights spread: ", np.round(np.array(member.weights_spread),2))
+                print("member size ", member.data_size, " weights spread: ",
+                      [np.format_float_scientific(mws,2) for mws in member.weights_spread])
 
             print("---------------------------------------------------------")
 
-            print("delta global weights: ", np.round(np.array(self.alliance.delta_glob_weights),2))
+            print("delta global weights: ", [np.format_float_scientific(mdw,2) for mdw in self.alliance.delta_glob_weights))
 
                 # Training loss, mean error rate over all alliance training data
             training_loss.append(self.alliance.alliance_training_loss(self.current_global_model))
