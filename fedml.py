@@ -332,20 +332,53 @@ class FedAveragingClassifier(AllianceModel):
             # Average the model updates  - here  we have a global synchronization step. Server should aggregate
             weights, weights_std = self.current_global_model.average_weights(round_models)
             self.weights_std.append(weights_std)
+            old_weights = self.current_global_model.model.get_weights()
+            delta_w = 0
+            for ow,w in zip(old_weights,weights):
+                delta_w += np.sum(abs(ow-w))
+
+            self.delta_glob_weights.append(delta_w)
             self.current_global_model.set_weights(weights)
             self.alliance.global_score_local_models()
-            # self.score_test_set.append(self.alliance_test_loss(self.))
             for member in self.alliance.members:
-                print("member size ", member.data_size, " global score: ", np.round(np.array(member.global_score),2),
-                      ", total score: ", np.round(np.sum(np.array(member.global_score)),3))
+                pw = member.model.model.get_weights()
+                delta_w = 0
+                for ow, w in zip(old_weights, pw):
+                    delta_w += np.sum(abs(ow - w))
+                member.delta_weights.append(delta_w)
+
+
+            for member in self.alliance.members:
+                pw = member.model.model.get_weights()
+                delta_w = 0
+                for gw, w in zip(weights, pw):
+                    delta_w += np.sum(abs(gw - w))
+                member.weights_spread.append(delta_w)
+
+
+            # self.score_test_set.append(self.alliance_test_loss(self.))
+            print("---------------------------------------------------------")
+            for member in self.alliance.members:
+                print("member size ", member.data_size, " global score: ", np.round(np.array(member.global_score),3))
+            print("---------------------------------------------------------")
 
             for member in self.alliance.members:
                 print("member size ", member.data_size, " global score: ",
                       np.round(np.array(member.score_test_set), 2),
                       ", total score: ", np.round(np.sum(np.array(member.score_test_set)), 3))
+            print("---------------------------------------------------------")
 
+            for member in self.alliance.members:
+                print("member size ", member.data_size, " delta weights: ", member.delta_weights)
 
-            # Training loss, mean error rate over all alliance training data
+            print("---------------------------------------------------------")
+
+            for member in self.alliance.members:
+                print("member size ", member.data_size, " weights spread: ", member.weights_spread)
+
+            print("---------------------------------------------------------")
+
+                # Training loss, mean error rate over all alliance training data
             training_loss.append(self.alliance.alliance_training_loss(self.current_global_model))
             print("training loss: ", np.round(np.array(training_loss),3))
 
@@ -503,6 +536,8 @@ class AllianceMember(object):
         self.data_order = np.arange(len(x_train))
         self.data_size = len(x_train)
         self.score_test_set = []
+        self.delta_weights = []
+        self.weights_spread = []
 
     def get_model(self):
         if self.model is None:
