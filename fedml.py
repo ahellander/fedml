@@ -378,6 +378,8 @@ class FedAveragingClassifier(AllianceModel):
 
             print("---------------------------------------------------------__")
 
+            print("delta global weights: ", np.round(np.array(self.alliance.delta_glob_weights),2))
+
                 # Training loss, mean error rate over all alliance training data
             training_loss.append(self.alliance.alliance_training_loss(self.current_global_model))
             print("training loss: ", np.round(np.array(training_loss),3))
@@ -406,6 +408,7 @@ class Alliance(object):
         self.currGlobalModel = None #current global model
         self.penalty = penalty
         self.classes = classes
+        self.delta_glob_weights = []
 
     def add_member(self, member): # and register
         self.members.append(member)

@@ -16,8 +16,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/fedml.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="378">
-              <caret line="539" column="11" selection-start-line="539" selection-start-column="11" selection-end-line="539" selection-end-column="11" />
+            <state relative-caret-position="344">
+              <caret line="380" column="31" selection-start-line="380" selection-start-column="31" selection-end-line="380" selection-end-column="31" />
               <folding>
                 <element signature="e#0#35#0" expanded="true" />
               </folding>
@@ -138,20 +138,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1573305871409</updated>
-    </task>
-    <task id="LOCAL-00010" summary="debugging memory leaks in fedml.py">
-      <created>1573472637896</created>
-      <option name="number" value="00010" />
-      <option name="presentableId" value="LOCAL-00010" />
-      <option name="project" value="LOCAL" />
-      <updated>1573472637896</updated>
-    </task>
-    <task id="LOCAL-00011" summary="debugging memory leaks in fedml.py">
-      <created>1573472781996</created>
-      <option name="number" value="00011" />
-      <option name="presentableId" value="LOCAL-00011" />
-      <option name="project" value="LOCAL" />
-      <updated>1573472781996</updated>
     </task>
     <task id="LOCAL-00012" summary="debugging memory leaks in fedml.py">
       <created>1573473008790</created>
@@ -482,7 +468,21 @@
       <option name="project" value="LOCAL" />
       <updated>1573822289188</updated>
     </task>
-    <option name="localTasksCounter" value="59" />
+    <task id="LOCAL-00059" summary="added weight update statistics">
+      <created>1573826137201</created>
+      <option name="number" value="00059" />
+      <option name="presentableId" value="LOCAL-00059" />
+      <option name="project" value="LOCAL" />
+      <updated>1573826137201</updated>
+    </task>
+    <task id="LOCAL-00060" summary="added weight update statistics">
+      <created>1573826272706</created>
+      <option name="number" value="00060" />
+      <option name="presentableId" value="LOCAL-00060" />
+      <option name="project" value="LOCAL" />
+      <updated>1573826272706</updated>
+    </task>
+    <option name="localTasksCounter" value="61" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -515,7 +515,8 @@
     <MESSAGE value="adding global score 2" />
     <MESSAGE value="adding global score debugging" />
     <MESSAGE value="fixing output text" />
-    <option name="LAST_COMMIT_MESSAGE" value="fixing output text" />
+    <MESSAGE value="added weight update statistics" />
+    <option name="LAST_COMMIT_MESSAGE" value="added weight update statistics" />
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/utils.py">
@@ -537,8 +538,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/fedml.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="378">
-          <caret line="539" column="11" selection-start-line="539" selection-start-column="11" selection-end-line="539" selection-end-column="11" />
+        <state relative-caret-position="344">
+          <caret line="380" column="31" selection-start-line="380" selection-start-column="31" selection-end-line="380" selection-end-column="31" />
           <folding>
             <element signature="e#0#35#0" expanded="true" />
           </folding>
