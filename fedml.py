@@ -337,7 +337,7 @@ class FedAveragingClassifier(AllianceModel):
             for ow,w in zip(old_weights,weights):
                 delta_w += np.sum(abs(ow-w))
 
-            self.delta_glob_weights.append(delta_w)
+            self.alliance.delta_glob_weights.append(delta_w)
             self.current_global_model.set_weights(weights)
             self.alliance.global_score_local_models()
             for member in self.alliance.members:
