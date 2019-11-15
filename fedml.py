@@ -17,6 +17,7 @@ import copy
 import  math
 import copy
 import psutil
+import time
 
 
 import keras
@@ -330,20 +331,29 @@ class FedAveragingClassifier(AllianceModel):
 
 
             # Average the model updates  - here  we have a global synchronization step. Server should aggregate
+            print("average model starts")
+            t0=time.time()
             weights, weights_std = self.current_global_model.average_weights(round_models)
+            print("average model ends: ", np.round(time.time()-t0 ,4))
+            t0=time.time()
+
             self.weights_std.append(weights_std)
             old_weights = self.current_global_model.model.get_weights()
 
             self.alliance.delta_glob_weights.append(weights_dist(old_weights,weights))
             self.current_global_model.set_weights(weights)
             self.alliance.global_score_local_models()
-            for member in self.alliance.members:
-                pw = member.model.model.get_weights()
-                member.delta_weights.append(weights_dist(old_weights,pw))
+            print("set weights/globalscore locar models ends: ", np.round(time.time() - t0, 4))
+            t0 = time.time()
 
             for member in self.alliance.members:
                 pw = member.model.model.get_weights()
-                member.weights_spread.append(weights_dist(weights,pw))
+                member.delta_weights.append(weights_dist(old_weights,pw))
+                member.weights_spread.append(weights_dist(weights, pw))
+
+            print("weights dist ends: ", np.round(time.time() - t0, 4))
+            t0 = time.time()
+
 
 
             # self.score_test_set.append(self.alliance_test_loss(self.))
