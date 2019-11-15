@@ -333,27 +333,17 @@ class FedAveragingClassifier(AllianceModel):
             weights, weights_std = self.current_global_model.average_weights(round_models)
             self.weights_std.append(weights_std)
             old_weights = self.current_global_model.model.get_weights()
-            delta_w = 0
-            for ow,w in zip(old_weights,weights):
-                delta_w += np.sum(abs(ow-w))
 
-            self.alliance.delta_glob_weights.append(delta_w)
+            self.alliance.delta_glob_weights.append(weights_dist(old_weights,weights))
             self.current_global_model.set_weights(weights)
             self.alliance.global_score_local_models()
             for member in self.alliance.members:
                 pw = member.model.model.get_weights()
-                delta_w = 0
-                for ow, w in zip(old_weights, pw):
-                    delta_w += np.sum(abs(ow - w))
-                member.delta_weights.append(delta_w)
-
+                member.delta_weights.append(weights_dist(old_weights,pw))
 
             for member in self.alliance.members:
                 pw = member.model.model.get_weights()
-                delta_w = 0
-                for gw, w in zip(weights, pw):
-                    delta_w += np.sum(abs(gw - w))
-                member.weights_spread.append(delta_w)
+                member.weights_spread.append(weights_dist(weights,pw))
 
 
             # self.score_test_set.append(self.alliance_test_loss(self.))
@@ -369,14 +359,14 @@ class FedAveragingClassifier(AllianceModel):
             print("---------------------------------------------------------")
 
             for member in self.alliance.members:
-                print("member size ", member.data_size, " delta weights: ", member.delta_weights)
+                print("member size ", member.data_size, " delta weights: ", np.round(np.array(member.delta_weights),2))
 
             print("---------------------------------------------------------")
 
             for member in self.alliance.members:
-                print("member size ", member.data_size, " weights spread: ", member.weights_spread)
+                print("member size ", member.data_size, " weights spread: ", np.round(np.array(member.weights_spread),2))
 
-            print("---------------------------------------------------------__")
+            print("---------------------------------------------------------")
 
             print("delta global weights: ", np.round(np.array(self.alliance.delta_glob_weights),2))
 
@@ -397,6 +387,7 @@ class FedAveragingClassifier(AllianceModel):
     def predict(self,x_test):
         """ fdfsd """ 
         return self.current_global_model.predict(x_test)
+
 
 
 class Alliance(object):
@@ -736,7 +727,12 @@ def run_FedAveraging(x,y,M,parameters=None,n_repeats = 1):
 
     return scores, training_loss, test_loss 
 
+def weights_dist(weights1, weights2):
+    delta_w = []
+    for w1, w2 in zip(weights1, weights2):
+        delta_w.append(np.mean(abs(weights1 - weights2)))
 
+    return np.mean(np.array(delta_w))
 
 def tune_federated_averaging(x,y,M):
     """ Experiment with hyperparameters for the federated SGD model """
@@ -920,4 +916,5 @@ if __name__ == '__main__':
             #plt.show()
             plt.savefig("localPlots/"+dataset_name+".png")
             plt.clf()
+
 
