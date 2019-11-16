@@ -95,7 +95,7 @@ class KerasSequentialCifar(BaseLearner):
             batch_size = x.shape[0]
 
         if training_steps is not None:
-            print("training steps: ", training_steps)
+            print("training steps is not None: training steps: ", training_steps)
             epochs = 1
             start_ind = data_set_index
             end_ind = start_ind + batch_size * training_steps
