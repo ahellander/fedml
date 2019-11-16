@@ -303,6 +303,9 @@ class FedAveragingClassifier(AllianceModel):
             print("alliance temp model: ", self.alliance.temp_model)
             self.alliance.temp_model = self.base_learner
             print("alliance temp model: ", self.alliance.temp_model)
+        else:
+            print("else: alliance temp model: ", self.alliance.temp_model)
+
 
 
         for member in self.alliance.members:
