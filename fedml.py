@@ -312,6 +312,8 @@ class FedAveragingClassifier(AllianceModel):
             rand_indx = np.random.permutation(len(self.alliance.members))
 
             global_weights = self.current_global_model.model.get_weights()
+            t0=time.time()
+
             for indx in rand_indx:
                 # Each member gets its own copy of the model
                 # partialModel = copy.deepcopy(self.current_global_model)
@@ -331,19 +333,21 @@ class FedAveragingClassifier(AllianceModel):
 
 
             # Average the model updates  - here  we have a global synchronization step. Server should aggregate
+            print("training time: ", np.round(time.time() - t0, 4), "s.")
             print("average model starts")
             t0=time.time()
             weights, weights_std = self.current_global_model.average_weights(round_models)
-            print("average model ends: ", np.round(time.time()-t0 ,4))
+            print("average model ends: ", np.round(time.time()-t0 ,4), "s.")
             t0=time.time()
 
             self.weights_std.append(weights_std)
-            old_weights = self.current_global_model.model.get_weights()
+            # old_weights = self.current_global_model.model.get_weights()
+            old_weights = global_weights
 
             self.alliance.delta_glob_weights.append(weights_dist(old_weights,weights))
             self.current_global_model.set_weights(weights)
             self.alliance.global_score_local_models()
-            print("set weights/globalscore locar models ends: ", np.round(time.time() - t0, 4))
+            print("set weights/globalscore locar models ends: ", np.round(time.time() - t0, 4), "s.")
             t0 = time.time()
 
             for member in self.alliance.members:
@@ -351,7 +355,7 @@ class FedAveragingClassifier(AllianceModel):
                 member.delta_weights.append(weights_dist(old_weights,pw))
                 member.weights_spread.append(weights_dist(weights, pw))
 
-            print("weights dist ends: ", np.round(time.time() - t0, 4))
+            print("weights dist ends: ", np.round(time.time() - t0, 4), "s.")
             t0 = time.time()
 
 
@@ -371,14 +375,14 @@ class FedAveragingClassifier(AllianceModel):
             for member in self.alliance.members:
                 print("member size ", member.data_size, " delta weights: ",
                       [np.format_float_scientific(mdw,2) for mdw in member.delta_weights[-5:]],
-                      ", mean: ", np.round(np.array(member.delta_weights),3))
+                      ", mean: ", np.round(np.mean(np.array(member.delta_weights)),3))
 
             print("---------------------------------------------------------")
 
             for member in self.alliance.members:
                 print("member size ", member.data_size, " weights spread: ",
                       [np.format_float_scientific(mws,2) for mws in member.weights_spread[-5:]],
-                      ", mean: ", np.round(np.array(member.weights_spread), 3))
+                      ", mean: ", np.round(np.mean(np.array(member.weights_spread)), 3))
 
             print("---------------------------------------------------------")
 
@@ -392,7 +396,7 @@ class FedAveragingClassifier(AllianceModel):
             # Test loss, mean error rate on a  validation set
             try:
                 self.test_loss.append(self.alliance.alliance_test_loss(self.current_global_model))
-                print("test_loss: ", np.round(np.array(self.test_loss),2))
+                print("test_loss: ", np.round(np.array(self.test_loss),3))
                 # TODO: Implement early stopping
             except:
                 pass
