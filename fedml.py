@@ -295,7 +295,7 @@ class FedAveragingClassifier(AllianceModel):
     def fit(self, parameters=None):
         """  """
         training_loss = []
-
+        print("fit starts!")
         if not self.current_global_model:
             self.current_global_model = self.base_learner
 
