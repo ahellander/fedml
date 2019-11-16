@@ -544,7 +544,7 @@ class Alliance(object):
             self.temp_model.set_weights(w)
             test_loss_wo = self.alliance_test_loss(self.temp_model)
             print("test loss wo: ", np.round(test_loss_wo,4))
-            self.members[model_member].q_score = self.test_loss[-1] - test_loss_wo
+            self.members[model_member].q_score.append(self.test_loss[-1] - test_loss_wo)
 
         # score_matrix = np.zeros((len(self.members),len(self.members)))
         # for db_member in range(len(self.members)):

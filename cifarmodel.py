@@ -73,7 +73,7 @@ class KerasSequentialCifar(BaseLearner):
             weight_l_avg = np.mean(lay_l,0)
             avg_w.append(weight_l_avg)
         mean_avg = np.mean(np.array(avg_std))
-        print("weights mean std: ", mean_avg)
+        # print("weights mean std: ", mean_avg)
         return avg_w, mean_avg
 
     def set_weights(self,weights):
