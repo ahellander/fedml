@@ -90,11 +90,12 @@ class KerasSequentialCifar(BaseLearner):
         batch_size = 32
         epochs = 1
         data_augmentation = True
-
+        print("partial fit starts")
         if batch_size == "inf":
             batch_size = x.shape[0]
 
         if training_steps is not None:
+            print("training steps: ", training_steps)
             epochs = 1
             start_ind = data_set_index
             end_ind = start_ind + batch_size * training_steps
