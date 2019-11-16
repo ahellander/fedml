@@ -330,7 +330,7 @@ class FedAveragingClassifier(AllianceModel):
                 # print("Before set weights -- virtual memory used: ", psutil.virtual_memory()[2], "%")
                 self.alliance.members[indx].model.set_weights(global_weights)
                 # print("Before training -- virtual memory used: ", psutil.virtual_memory()[2], "%")
-
+                print("training starts!")
                 self.alliance.members[indx].train(self.alliance.members[indx].model,
                                                   nr_iter=parameters["nr_local_iterations"],
                                                   training_steps=parameters["training_steps"])
