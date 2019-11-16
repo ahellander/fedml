@@ -90,7 +90,6 @@ class KerasSequentialCifar(BaseLearner):
         batch_size = 32
         epochs = 1
         data_augmentation = True
-        # training_steps = 1000
 
         if batch_size == "inf":
             batch_size = x.shape[0]
@@ -117,7 +116,7 @@ class KerasSequentialCifar(BaseLearner):
             self.model.fit(x[ind], y[ind],
                       batch_size=batch_size,
                       epochs=epochs,
-                      shuffle=True)
+                      shuffle=False)
         else:
             # print('Using real-time data augmentation.')
             # print("before training(inside partial fit) -- virtual memory used: ", psutil.virtual_memory()[2], "%")

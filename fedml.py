@@ -346,6 +346,17 @@ class FedAveragingClassifier(AllianceModel):
 
             self.alliance.delta_glob_weights.append(weights_dist(old_weights,weights))
             self.current_global_model.set_weights(weights)
+
+            # Test loss, mean error rate on a  validation set
+            try:
+                self.test_loss.append(self.alliance.alliance_test_loss(self.current_global_model))
+                self.alliance.test_loss.append(self.test_loss[-1])
+
+                print("test_loss: ", np.round(np.array(self.test_loss), 3))
+                # TODO: Implement early stopping
+            except:
+                pass
+
             self.alliance.global_score_local_models()
             print("set weights/globalscore locar models ends: ", np.round(time.time() - t0, 4), "s.")
             t0 = time.time()
@@ -386,6 +397,13 @@ class FedAveragingClassifier(AllianceModel):
 
             print("---------------------------------------------------------")
 
+            for member in self.alliance.members:
+                print("member size ", member.data_size, " q_score: ",
+                      [np.round(qs, 3) for qs in member.q_score[-5:]],
+                      ", mean: ", np.round(np.mean(np.array(member.q_score)), 3))
+
+            print("---------------------------------------------------------")
+
             print("delta global weights: ",
                   [np.format_float_scientific(dgw,2) for dgw in self.alliance.delta_glob_weights])
 
@@ -393,13 +411,7 @@ class FedAveragingClassifier(AllianceModel):
             training_loss.append(self.alliance.alliance_training_loss(self.current_global_model))
             print("training loss: ", np.round(np.array(training_loss),3))
 
-            # Test loss, mean error rate on a  validation set
-            try:
-                self.test_loss.append(self.alliance.alliance_test_loss(self.current_global_model))
-                print("test_loss: ", np.round(np.array(self.test_loss),3))
-                # TODO: Implement early stopping
-            except:
-                pass
+
 
         return training_loss, self.weights_std
 
@@ -416,9 +428,11 @@ class Alliance(object):
         """ """
         self.members = []
         self.currGlobalModel = None #current global model
+        self.temp_model = None
         self.penalty = penalty
         self.classes = classes
         self.delta_glob_weights = []
+        self.test_loss = []
 
     def add_member(self, member): # and register
         self.members.append(member)
@@ -510,7 +524,18 @@ class Alliance(object):
     def global_score_local_models(self):
 
         for model_member in range(len(self.members)):
+            print("model ", self.members[model_member].data_size, " starts:")
             self.members[model_member].score_test_set.append(self.alliance_test_loss(self.members[model_member].model))
+            model_members = [self.members[m].model for m in list(set(np.arange(len(self.members))) - set([model_member]))]
+
+            if self.temp_model is None:
+                self.temp_model = copy.deepcopy(self.currGlobalModel)
+
+            w,_ = self.temp_model.average_weights(model_members)
+            self.temp_model.set_weights(w)
+            test_loss_wo = self.alliance_test_loss(self.temp_model)
+            print("test loss wo: ", np.round(test_loss_wo,4))
+            self.members[model_member].q_score = self.test_loss[-1] - test_loss_wo
 
         # score_matrix = np.zeros((len(self.members),len(self.members)))
         # for db_member in range(len(self.members)):
@@ -551,6 +576,7 @@ class AllianceMember(object):
         self.score_test_set = []
         self.delta_weights = []
         self.weights_spread = []
+        self.q_score = []
 
     def get_model(self):
         if self.model is None:
