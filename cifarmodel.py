@@ -112,6 +112,7 @@ class KerasSequentialCifar(BaseLearner):
         else:
             print("training steps: ", training_steps)
             ind = np.arange(x.shape[0])
+            print("ind: ", ind)
 
         if not data_augmentation:
             print('Not using data augmentation.')
