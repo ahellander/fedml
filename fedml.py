@@ -299,6 +299,10 @@ class FedAveragingClassifier(AllianceModel):
         if not self.current_global_model:
             self.current_global_model = self.base_learner
 
+        if not self.alliance.temp_model:
+            self.alliance.temp_model = self.base_learner
+
+
         for member in self.alliance.members:
             member.set_model(copy.deepcopy(self.current_global_model))
         #  Start training 
@@ -528,8 +532,8 @@ class Alliance(object):
             self.members[model_member].score_test_set.append(self.alliance_test_loss(self.members[model_member].model))
             model_members = [self.members[m].model for m in list(set(np.arange(len(self.members))) - set([model_member]))]
 
-            if self.temp_model is None:
-                self.temp_model = copy.deepcopy(self.currGlobalModel)
+            # if self.temp_model is None:
+            #     self.temp_model = copy.deepcopy(self.currGlobalModel)
 
             w,_ = self.temp_model.average_weights(model_members)
             self.temp_model.set_weights(w)
