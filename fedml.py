@@ -375,9 +375,16 @@ class FedAveragingClassifier(AllianceModel):
                 if member.q_score[-1]>0:
                     approved_models.append(member.model)
 
-            approved_weights, approved_weights_std = self.current_global_model.average_weights(all_models)
-            self.current_global_model.set_weights(approved_weights)
-            self.test_loss.append(self.alliance.alliance_test_loss(self.current_global_model))
+            if len(approved_models) > 0:
+                approved_weights, approved_weights_std = self.current_global_model.average_weights(approved_models)
+                self.current_global_model.set_weights(approved_weights)
+                self.test_loss.append(self.alliance.alliance_test_loss(self.current_global_model))
+            else:
+                #reset old model
+                self.current_global_model.set_weights(old_weights)
+                self.test_loss.append(-1)
+
+
             print("set weights/globalscore locar models ends: ", np.round(time.time() - t0, 4), "s.")
             t0 = time.time()
 
