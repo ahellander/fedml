@@ -315,7 +315,7 @@ class FedAveragingClassifier(AllianceModel):
             print("global epoch: ", j)
             print("virtual memory used: ", psutil.virtual_memory()[2], "%")
 
-            round_models =[]
+            # round_models =[]
 
             # This step is a map operation - should happen in parallel/async
             rand_indx = np.random.permutation(len(self.alliance.members))
@@ -330,14 +330,15 @@ class FedAveragingClassifier(AllianceModel):
                 # print("Before set weights -- virtual memory used: ", psutil.virtual_memory()[2], "%")
                 self.alliance.members[indx].model.set_weights(global_weights)
                 # print("Before training -- virtual memory used: ", psutil.virtual_memory()[2], "%")
-                print("training starts!")
+                print("training starts model size: ",self.alliance.members[indx].data_size )
                 self.alliance.members[indx].train(self.alliance.members[indx].model,
                                                   nr_iter=parameters["nr_local_iterations"],
-                                                  training_steps=parameters["training_steps"])
+                                                  training_steps=parameters["training_steps"],
+                                                  data_augmentation=parameters["data_augmentation"])
                 # print("After training -- virtual memory used: ", psutil.virtual_memory()[2], "%")
 
                 # self.alliance.members[indx].train(partialModel,nr_iter=parameters["nr_local_iterations"])
-                round_models.append(self.alliance.members[indx].model)
+                # round_models.append(self.alliance.members[indx].model)
                 # print("After append model -- virtual memory used: ", psutil.virtual_memory()[2], "%")
 
 
@@ -345,7 +346,8 @@ class FedAveragingClassifier(AllianceModel):
             print("training time: ", np.round(time.time() - t0, 4), "s.")
             print("average model starts")
             t0=time.time()
-            weights, weights_std = self.current_global_model.average_weights(round_models)
+            all_models = [member.model for member in self.alliance.members]
+            new_weights, weights_std = self.current_global_model.average_weights(all_models)
             print("average model ends: ", np.round(time.time()-t0 ,4), "s.")
             t0=time.time()
 
@@ -353,27 +355,35 @@ class FedAveragingClassifier(AllianceModel):
             # old_weights = self.current_global_model.model.get_weights()
             old_weights = global_weights
 
-            self.alliance.delta_glob_weights.append(weights_dist(old_weights,weights))
-            self.current_global_model.set_weights(weights)
+            self.alliance.delta_glob_weights.append(weights_dist(old_weights,new_weights))
+            self.current_global_model.set_weights(new_weights)
 
             # Test loss, mean error rate on a  validation set
             try:
-                self.test_loss.append(self.alliance.alliance_test_loss(self.current_global_model))
+                self.test_loss_all.append(self.alliance.alliance_test_loss(self.current_global_model))
                 self.alliance.test_loss.append(self.test_loss[-1])
 
-                print("test_loss: ", np.round(np.array(self.test_loss), 3))
                 # TODO: Implement early stopping
             except:
                 pass
 
             self.alliance.global_score_local_models()
+
+            approved_models = []
+            for member in self.alliance.members:
+                if member.q_score[-1]>0:
+                    approved_models.append(member.model)
+
+            approved_weights, approved_weights_std = self.current_global_model.average_weights(all_models)
+            self.current_global_model.set_weights(approved_weights)
+            self.test_loss.append(self.alliance.alliance_test_loss(self.current_global_model))
             print("set weights/globalscore locar models ends: ", np.round(time.time() - t0, 4), "s.")
             t0 = time.time()
 
             for member in self.alliance.members:
                 pw = member.model.model.get_weights()
                 member.delta_weights.append(weights_dist(old_weights,pw))
-                member.weights_spread.append(weights_dist(weights, pw))
+                member.weights_spread.append(weights_dist(new_weights, pw))
 
             print("weights dist ends: ", np.round(time.time() - t0, 4), "s.")
             t0 = time.time()
@@ -419,8 +429,7 @@ class FedAveragingClassifier(AllianceModel):
                 # Training loss, mean error rate over all alliance training data
             training_loss.append(self.alliance.alliance_training_loss(self.current_global_model))
             print("training loss: ", np.round(np.array(training_loss),3))
-
-
+            print("test_loss: ", np.round(np.array(self.test_loss), 3))
 
         return training_loss, self.weights_std
 
@@ -442,6 +451,7 @@ class Alliance(object):
         self.classes = classes
         self.delta_glob_weights = []
         self.test_loss = []
+        self.test_loss_all = []
 
     def add_member(self, member): # and register
         self.members.append(member)
@@ -544,7 +554,8 @@ class Alliance(object):
             self.temp_model.set_weights(w)
             test_loss_wo = self.alliance_test_loss(self.temp_model)
             print("test loss wo: ", np.round(test_loss_wo,4))
-            self.members[model_member].q_score.append(self.test_loss[-1] - test_loss_wo)
+            q_score = self.test_loss_all[-1] - test_loss_wo
+            self.members[model_member].q_score.append(q_score)
 
         # score_matrix = np.zeros((len(self.members),len(self.members)))
         # for db_member in range(len(self.members)):
@@ -633,7 +644,7 @@ class AllianceMember(object):
 
         return self.model
 
-    def train(self, partialModel, nr_iter=1, training_steps=None):
+    def train(self, partialModel, nr_iter=1, training_steps=None, data_augmentation=True):
         """ Update global model by training nr_iter iterations on local training data. """
 
         for j in range(nr_iter):
@@ -645,7 +656,8 @@ class AllianceMember(object):
                                                                   classes=self.classes,
                                                                   data_set_index=self.data_set_index,
                                                                   data_order=self.data_order,
-                                                                  training_steps=training_steps)
+                                                                  training_steps=training_steps,
+                                                                  data_augmentation=data_augmentation)
             self.data_set_index = data_set_index
             self.data_order = data_order
 
