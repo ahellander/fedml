@@ -287,6 +287,7 @@ class FedAveragingClassifier(AllianceModel):
         self.default_parameters = {"nr_global_iterations":100, "nr_local_iterations":1, "training_steps":None}
         self.weights_std = []
         self.test_loss = []
+        self.test_loss_all = []
 
 
         super().__init__(alliance)
@@ -361,7 +362,7 @@ class FedAveragingClassifier(AllianceModel):
             # Test loss, mean error rate on a  validation set
             try:
                 self.test_loss_all.append(self.alliance.alliance_test_loss(self.current_global_model))
-                self.alliance.test_loss.append(self.test_loss[-1])
+                self.alliance.test_loss_all.append(self.test_loss_all[-1])
 
                 # TODO: Implement early stopping
             except:
@@ -554,6 +555,7 @@ class Alliance(object):
             self.temp_model.set_weights(w)
             test_loss_wo = self.alliance_test_loss(self.temp_model)
             print("test loss wo: ", np.round(test_loss_wo,4))
+            print("test loss all: ", self.test_loss_all)
             q_score = self.test_loss_all[-1] - test_loss_wo
             self.members[model_member].q_score.append(q_score)
 

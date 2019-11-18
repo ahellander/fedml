@@ -2,7 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="fa5be9ab-e33f-4f24-9fa0-0a791864d48f" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/cifarmodel.py" beforeDir="false" afterPath="$PROJECT_DIR$/cifarmodel.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fedml.py" beforeDir="false" afterPath="$PROJECT_DIR$/fedml.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -12,11 +13,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/fedml.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="225">
-              <caret line="332" column="39" selection-start-line="332" selection-start-column="39" selection-end-line="332" selection-end-column="39" />
+            <state relative-caret-position="191">
+              <caret line="543" column="33" selection-start-line="543" selection-start-column="8" selection-end-line="543" selection-end-column="33" />
               <folding>
                 <element signature="e#0#35#0" expanded="true" />
               </folding>
@@ -24,11 +25,11 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/cifarmodel.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="408">
-              <caret line="114" column="31" lean-forward="true" selection-start-line="114" selection-start-column="31" selection-end-line="114" selection-end-column="31" />
+            <state relative-caret-position="302">
+              <caret line="92" lean-forward="true" selection-start-line="92" selection-end-line="92" />
               <folding>
                 <element signature="e#0#29#0" expanded="true" />
               </folding>
@@ -69,10 +70,12 @@
       <find>def weigh</find>
       <find>global_score_lo</find>
       <find>weights_dist</find>
-      <find>global_score_local_models</find>
       <find>time.t</find>
       <find>q_score</find>
       <find>cifar</find>
+      <find>cif</find>
+      <find>test_loss_all</find>
+      <find>global_score_local_models</find>
     </findStrings>
     <replaceStrings>
       <replace>data_order</replace>
@@ -83,18 +86,19 @@
     <option name="PUSH_TAGS">
       <GitPushTagMode />
     </option>
+    <option name="PREVIEW_PUSH_PROTECTED_ONLY" value="true" />
   </component>
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/fedml.py" />
         <option value="$PROJECT_DIR$/cifarmodel.py" />
+        <option value="$PROJECT_DIR$/fedml.py" />
       </list>
     </option>
   </component>
   <component name="ProjectFrameBounds">
     <option name="x" value="65" />
-    <option name="y" value="56" />
+    <option name="y" value="57" />
     <option name="width" value="1750" />
     <option name="height" value="980" />
   </component>
@@ -144,27 +148,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1573305871409</updated>
-    </task>
-    <task id="LOCAL-00034" summary="adding global score debugging">
-      <created>1573520174541</created>
-      <option name="number" value="00034" />
-      <option name="presentableId" value="LOCAL-00034" />
-      <option name="project" value="LOCAL" />
-      <updated>1573520174541</updated>
-    </task>
-    <task id="LOCAL-00035" summary="adding global score debugging">
-      <created>1573520341060</created>
-      <option name="number" value="00035" />
-      <option name="presentableId" value="LOCAL-00035" />
-      <option name="project" value="LOCAL" />
-      <updated>1573520341060</updated>
-    </task>
-    <task id="LOCAL-00036" summary="adding global score debugging">
-      <created>1573520927463</created>
-      <option name="number" value="00036" />
-      <option name="presentableId" value="LOCAL-00036" />
-      <option name="project" value="LOCAL" />
-      <updated>1573520927463</updated>
     </task>
     <task id="LOCAL-00037" summary="adding global score debugging">
       <created>1573521412560</created>
@@ -488,11 +471,32 @@
       <option name="project" value="LOCAL" />
       <updated>1573920308412</updated>
     </task>
-    <option name="localTasksCounter" value="83" />
+    <task id="LOCAL-00083" summary="debuging training_steps == None">
+      <created>1573920580302</created>
+      <option name="number" value="00083" />
+      <option name="presentableId" value="LOCAL-00083" />
+      <option name="project" value="LOCAL" />
+      <updated>1573920580302</updated>
+    </task>
+    <task id="LOCAL-00084" summary="debuging training_steps == None">
+      <created>1573920691302</created>
+      <option name="number" value="00084" />
+      <option name="presentableId" value="LOCAL-00084" />
+      <option name="project" value="LOCAL" />
+      <updated>1573920691302</updated>
+    </task>
+    <task id="LOCAL-00085" summary="added only used model weight where q_score&gt;0&#10;also added parameter['data_augmentation']">
+      <created>1574081025185</created>
+      <option name="number" value="00085" />
+      <option name="presentableId" value="LOCAL-00085" />
+      <option name="project" value="LOCAL" />
+      <updated>1574081025186</updated>
+    </task>
+    <option name="localTasksCounter" value="86" />
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="52" y="45" width="1400" height="784" extended-state="0" />
+    <frame x="52" y="46" width="1400" height="784" extended-state="0" />
     <editor active="true" />
     <layout>
       <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.25" />
@@ -524,7 +528,8 @@
     <MESSAGE value="added weight update statistics" />
     <MESSAGE value="trying to implement q score" />
     <MESSAGE value="debuging training_steps == None" />
-    <option name="LAST_COMMIT_MESSAGE" value="debuging training_steps == None" />
+    <MESSAGE value="added only used model weight where q_score&gt;0&#10;also added parameter['data_augmentation']" />
+    <option name="LAST_COMMIT_MESSAGE" value="added only used model weight where q_score&gt;0&#10;also added parameter['data_augmentation']" />
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/utils.py">
@@ -534,22 +539,22 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/fedml.py">
+    <entry file="file://$PROJECT_DIR$/cifarmodel.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="225">
-          <caret line="332" column="39" selection-start-line="332" selection-start-column="39" selection-end-line="332" selection-end-column="39" />
+        <state relative-caret-position="302">
+          <caret line="92" lean-forward="true" selection-start-line="92" selection-end-line="92" />
           <folding>
-            <element signature="e#0#35#0" expanded="true" />
+            <element signature="e#0#29#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/cifarmodel.py">
+    <entry file="file://$PROJECT_DIR$/fedml.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="408">
-          <caret line="114" column="31" lean-forward="true" selection-start-line="114" selection-start-column="31" selection-end-line="114" selection-end-column="31" />
+        <state relative-caret-position="191">
+          <caret line="543" column="33" selection-start-line="543" selection-start-column="8" selection-end-line="543" selection-end-column="33" />
           <folding>
-            <element signature="e#0#29#0" expanded="true" />
+            <element signature="e#0#35#0" expanded="true" />
           </folding>
         </state>
       </provider>
