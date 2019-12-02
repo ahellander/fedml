@@ -11,18 +11,20 @@ from keras.preprocessing.image import ImageDataGenerator
 import keras.backend as K
 
 import psutil
-x_data = np.zeros((0,32,32,3))
-y_data = np.zeros((0,1))
-learning_rate = 0.001
-decay = 0
-for i in range(1,6):
-    raw_data = pickle.load(open('cifar-10-python/data_batch_' + str(i),'rb'),encoding='bytes')
-    x_data = np.append(x_data, np.transpose(np.reshape(raw_data[b'data'],[-1,3,32,32]),[0,2,3,1]), axis=0)
-    y_data = np.append(y_data, np.array(raw_data[b'labels']))
+from keras.datasets import cifar10
 
-raw_data = pickle.load(open('cifar-10-python/test_batch','rb'),encoding='bytes')
-x_test = np.transpose(np.reshape(raw_data[b'data'],[-1,3,32,32]),[0,2,3,1])
-y_test = np.array(raw_data[b'labels'])
+(x_train, y_train), (x_test, y_test) = cifar10.load_data()
+print('x_train shape:', x_train.shape)
+print(x_train.shape[0], 'train samples')
+print(x_test.shape[0], 'test samples')
+num_classes=10
+# Convert class vectors to binary class matrices.
+y_train = keras.utils.to_categorical(y_train, num_classes)
+y_test = keras.utils.to_categorical(y_test, num_classes)
+x_train = x_train.astype('float32')
+x_test = x_test.astype('float32')
+x_train /= 255
+x_test /= 255
 
 
 
