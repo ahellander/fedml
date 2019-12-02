@@ -377,6 +377,8 @@ class FedAveragingClassifier(AllianceModel):
 
             # Test loss, mean error rate on a  validation set
             try:
+                self.test_loss.append(self.alliance.alliance_test_loss(self.current_global_model))
+
                 self.test_loss_all.append(self.alliance.alliance_test_loss(self.current_global_model))
                 self.alliance.test_loss_all.append(self.test_loss_all[-1])
 
@@ -570,6 +572,7 @@ class Alliance(object):
 
     def alliance_test_loss(self,alliance_model):
         """ Use alliance global validation data.  """
+        print("alliance_test_loss")
         y_pred = alliance_model.predict(self.x_test)
         error_rate = compute_errorRate(self.y_test, y_pred)
         return  1 - error_rate/2
