@@ -58,7 +58,7 @@ class KerasSequentialCifar(BaseLearner):
 
 
     @staticmethod
-    def average_weights(models):
+    def average_weights(models,model_size=None):
         """ fdfdsfs """
         # print("Before average weights -- virtual memory used: ", psutil.virtual_memory()[2], "%")
 
@@ -68,9 +68,12 @@ class KerasSequentialCifar(BaseLearner):
         avg_std = []
         for l in range(len(weights[0])):
             lay_l = np.array([w[l] for w in weights])
-            # print("mean std layer ", l, ": ", np.mean(np.std(lay_l,0)))
-            avg_std.append(np.mean(np.std(lay_l,0)))
-            weight_l_avg = np.mean(lay_l,0)
+            avg_std.append(np.mean(np.std(lay_l, 0)))
+            print("lay_l shape: ", lay_l.shape)
+            if model_size is not None:
+                weight_l_avg = np.sum(lay_l*model_size,0 )
+            else:
+                weight_l_avg = np.mean(lay_l,0)
             avg_w.append(weight_l_avg)
         mean_avg = np.mean(np.array(avg_std))
         # print("weights mean std: ", mean_avg)

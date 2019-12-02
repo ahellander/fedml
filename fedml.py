@@ -348,7 +348,8 @@ class FedAveragingClassifier(AllianceModel):
             print("average model starts")
             t0=time.time()
             all_models = [member.model for member in self.alliance.members]
-            new_weights, weights_std = self.current_global_model.average_weights(all_models)
+            model_sizes = [member.data_size for member in self.alliance.members]
+            new_weights, weights_std = self.current_global_model.average_weights(all_models, model_sizes)
             print("average model ends: ", np.round(time.time()-t0 ,4), "s.")
             t0=time.time()
 
@@ -435,16 +436,47 @@ class FedAveragingClassifier(AllianceModel):
                   [np.format_float_scientific(dgw,2) for dgw in self.alliance.delta_glob_weights])
 
                 # Training loss, mean error rate over all alliance training data
-            training_loss.append(self.alliance.alliance_training_loss(self.current_global_model))
-            print("training loss: ", np.round(np.array(training_loss),3))
+            # training_loss.append(self.alliance.alliance_training_loss(self.current_global_model))
+            # print("training loss: ", np.round(np.array(training_loss),3))
             print("test_loss: ", np.round(np.array(self.test_loss), 3))
 
-        return training_loss, self.weights_std
+        return self.test_loss, self.weights_std
 
     def predict(self,x_test):
         """ fdfsd """ 
         return self.current_global_model.predict(x_test)
 
+    def global_score_local_models(self):
+
+
+        # average all models score
+        model_members = [self.alliance.members[m].model for m in
+                         list(set(np.arange(len(self.members))))]
+
+        w, _ = self.temp_model.average_weights(model_members)
+        self.current_global_model.set_weights(w)
+        test_loss_all = self.alliance_test_loss(self.temp_model)
+        best_w = w
+        print("test loss all: ", np.round(test_loss_all, 4))
+        best_loss = test_loss_all
+        for model_member in range(len(self.alliance.members)):
+            print("model ", self.alliance.members[model_member].data_size, " starts:")
+            # self.alliance.members[model_member].score_test_set.append(self.alliance_test_loss(self.members[model_member].model))
+            model_members = [self.members[m].model for m in
+                             list(set(np.arange(len(self.members))) - set([model_member]))]
+
+            w, _ = self.temp_model.average_weights(model_members)
+            self.current_global_model.set_weights(w)
+            test_loss_wo = self.alliance_test_loss(self.current_global_model)
+            print("test loss wo: ", np.round(test_loss_wo, 4))
+
+            q_score = self.test_loss_all[-1] - test_loss_wo
+            self.members[model_member].q_score.append(q_score)
+            if test_loss_wo > best_loss:
+                best_loss = test_loss_wo
+                best_w = w
+
+        self.current_global_model.set_weights(best_w)
 
 
 class Alliance(object):
@@ -550,6 +582,8 @@ class Alliance(object):
 
     def global_score_local_models(self):
 
+        print("test loss all[-1]: ", np.round(self.test_loss_all[-1],4))
+
         for model_member in range(len(self.members)):
             print("model ", self.members[model_member].data_size, " starts:")
             self.members[model_member].score_test_set.append(self.alliance_test_loss(self.members[model_member].model))
@@ -562,26 +596,10 @@ class Alliance(object):
             self.temp_model.set_weights(w)
             test_loss_wo = self.alliance_test_loss(self.temp_model)
             print("test loss wo: ", np.round(test_loss_wo,4))
-            print("test loss all: ", self.test_loss_all)
             q_score = self.test_loss_all[-1] - test_loss_wo
             self.members[model_member].q_score.append(q_score)
 
-        # score_matrix = np.zeros((len(self.members),len(self.members)))
-        # for db_member in range(len(self.members)):
-        #     for model_member in range(len(self.members)):
-        #         if db_member != model_member:
-        #             score_matrix[db_member,model_member] = self.members[db_member].scoreLocalData(self.members[model_member].model)
-        #
-        # # score_matrix -= np.mean(score_matrix)
-        # for db_member in range(len(self.members)):
-        #     model_members = list(set(np.arange(len(self.members))) - set([db_member]))
-        #     # print("model members ind: ", model_members)
-        #     mean_score = np.mean(score_matrix[db_member,model_members])
-        #     score_matrix[db_member,model_members] = score_matrix[db_member,model_members] - mean_score
-        #
-        # for model_member in range(len(self.members)):
-        #     db_members = list(set(np.arange(len(self.members))) - set([model_member]))
-        #     self.members[model_member].global_score.append(np.mean(np.array(score_matrix[db_members,model_member])))
+
 
 
 class AllianceMember(object):
