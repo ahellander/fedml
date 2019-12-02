@@ -294,7 +294,16 @@ class FedAveragingClassifier(AllianceModel):
 
 
     def fit(self, parameters=None):
+
         """  """
+
+        # fill default values in parameters
+        if not "nr_global_iterations" in parameters:
+            parameters["nr_global_iterations"] = 10
+        if not "training_steps" in parameters:
+            parameters["training_steps"] = None
+
+
         training_loss = []
         print("fit starts!")
         if not self.current_global_model:
@@ -322,7 +331,7 @@ class FedAveragingClassifier(AllianceModel):
             rand_indx = np.random.permutation(len(self.alliance.members))
 
             global_weights = self.current_global_model.model.get_weights()
-            t0=time.time()
+            t0 = time.time()
 
             for indx in rand_indx:
                 # Each member gets its own copy of the model
@@ -347,17 +356,23 @@ class FedAveragingClassifier(AllianceModel):
             print("training time: ", np.round(time.time() - t0, 4), "s.")
             print("average model starts")
             t0=time.time()
-            all_models = [member.model for member in self.alliance.members]
-            model_sizes = [member.data_size for member in self.alliance.members]
-            new_weights, weights_std = self.current_global_model.average_weights(all_models, model_sizes)
+            if parameters['model_size_averaging'] == True:
+                temp_data = np.array([[member.model, member.data_size] for member in self.alliance.members])
+                all_models = list(temp_data[:,0])
+                model_sizes = list(temp_data[:,1])
+                new_weights, weights_std = self.current_global_model.average_weights(all_models, model_sizes)
+            else:
+                all_models = [member.model for member in self.alliance.members]
+                new_weights, weights_std = self.current_global_model.average_weights(all_models)
+
             print("average model ends: ", np.round(time.time()-t0 ,4), "s.")
             t0=time.time()
 
-            self.weights_std.append(weights_std)
-            # old_weights = self.current_global_model.model.get_weights()
-            old_weights = global_weights
-
-            self.alliance.delta_glob_weights.append(weights_dist(old_weights,new_weights))
+            # self.weights_std.append(weights_std)
+            # # old_weights = self.current_global_model.model.get_weights()
+            # old_weights = global_weights
+            #
+            # self.alliance.delta_glob_weights.append(weights_dist(old_weights,new_weights))
             self.current_global_model.set_weights(new_weights)
 
             # Test loss, mean error rate on a  validation set
@@ -369,32 +384,32 @@ class FedAveragingClassifier(AllianceModel):
             except:
                 pass
 
-            self.alliance.global_score_local_models()
+            # self.alliance.global_score_local_models()
 
-            approved_models = []
-            for member in self.alliance.members:
-                if member.q_score[-1]>0:
-                    approved_models.append(member.model)
+            # approved_models = []
+            # for member in self.alliance.members:
+            #     if member.q_score[-1]>0:
+            #         approved_models.append(member.model)
+            #
+            # if len(approved_models) > 0:
+            #     approved_weights, approved_weights_std = self.current_global_model.average_weights(approved_models)
+            #     self.current_global_model.set_weights(approved_weights)
+            #     self.test_loss.append(self.alliance.alliance_test_loss(self.current_global_model))
+            # else:
+            #     #reset old model
+            #     self.current_global_model.set_weights(old_weights)
+            #     self.test_loss.append(-1)
 
-            if len(approved_models) > 0:
-                approved_weights, approved_weights_std = self.current_global_model.average_weights(approved_models)
-                self.current_global_model.set_weights(approved_weights)
-                self.test_loss.append(self.alliance.alliance_test_loss(self.current_global_model))
-            else:
-                #reset old model
-                self.current_global_model.set_weights(old_weights)
-                self.test_loss.append(-1)
 
-
-            print("set weights/globalscore locar models ends: ", np.round(time.time() - t0, 4), "s.")
+            # print("set weights/globalscore locar models ends: ", np.round(time.time() - t0, 4), "s.")
             t0 = time.time()
 
-            for member in self.alliance.members:
-                pw = member.model.model.get_weights()
-                member.delta_weights.append(weights_dist(old_weights,pw))
-                member.weights_spread.append(weights_dist(new_weights, pw))
-
-            print("weights dist ends: ", np.round(time.time() - t0, 4), "s.")
+            # for member in self.alliance.members:
+            #     pw = member.model.model.get_weights()
+            #     member.delta_weights.append(weights_dist(old_weights,pw))
+            #     member.weights_spread.append(weights_dist(new_weights, pw))
+            #
+            # print("weights dist ends: ", np.round(time.time() - t0, 4), "s.")
             t0 = time.time()
 
 
@@ -403,37 +418,37 @@ class FedAveragingClassifier(AllianceModel):
             # print("---------------------------------------------------------")
             # for member in self.alliance.members:
             #     print("member size ", member.data_size, " global score: ", np.round(np.array(member.global_score),3))
-            print("---------------------------------------------------------")
-
-            for member in self.alliance.members:
-                print("member size ", member.data_size, " global score: ",
-                      np.round(np.array(member.score_test_set[-5:]), 2),
-                      ", total score: ", np.round(np.sum(np.array(member.score_test_set)), 3))
-            print("---------------------------------------------------------")
-
-            for member in self.alliance.members:
-                print("member size ", member.data_size, " delta weights: ",
-                      [np.format_float_scientific(mdw,2) for mdw in member.delta_weights[-5:]],
-                      ", mean: ", np.round(np.mean(np.array(member.delta_weights)),3))
-
-            print("---------------------------------------------------------")
-
-            for member in self.alliance.members:
-                print("member size ", member.data_size, " weights spread: ",
-                      [np.format_float_scientific(mws,2) for mws in member.weights_spread[-5:]],
-                      ", mean: ", np.round(np.mean(np.array(member.weights_spread)), 3))
-
-            print("---------------------------------------------------------")
-
-            for member in self.alliance.members:
-                print("member size ", member.data_size, " q_score: ",
-                      [np.round(qs, 3) for qs in member.q_score[-5:]],
-                      ", mean: ", np.round(np.mean(np.array(member.q_score)), 3))
-
-            print("---------------------------------------------------------")
-
-            print("delta global weights: ",
-                  [np.format_float_scientific(dgw,2) for dgw in self.alliance.delta_glob_weights])
+            # print("---------------------------------------------------------")
+            #
+            # for member in self.alliance.members:
+            #     print("member size ", member.data_size, " global score: ",
+            #           np.round(np.array(member.score_test_set[-5:]), 2),
+            #           ", total score: ", np.round(np.sum(np.array(member.score_test_set)), 3))
+            # print("---------------------------------------------------------")
+            #
+            # for member in self.alliance.members:
+            #     print("member size ", member.data_size, " delta weights: ",
+            #           [np.format_float_scientific(mdw,2) for mdw in member.delta_weights[-5:]],
+            #           ", mean: ", np.round(np.mean(np.array(member.delta_weights)),3))
+            #
+            # print("---------------------------------------------------------")
+            #
+            # for member in self.alliance.members:
+            #     print("member size ", member.data_size, " weights spread: ",
+            #           [np.format_float_scientific(mws,2) for mws in member.weights_spread[-5:]],
+            #           ", mean: ", np.round(np.mean(np.array(member.weights_spread)), 3))
+            #
+            # print("---------------------------------------------------------")
+            #
+            # for member in self.alliance.members:
+            #     print("member size ", member.data_size, " q_score: ",
+            #           [np.round(qs, 3) for qs in member.q_score[-5:]],
+            #           ", mean: ", np.round(np.mean(np.array(member.q_score)), 3))
+            #
+            # print("---------------------------------------------------------")
+            #
+            # print("delta global weights: ",
+            #       [np.format_float_scientific(dgw,2) for dgw in self.alliance.delta_glob_weights])
 
                 # Training loss, mean error rate over all alliance training data
             # training_loss.append(self.alliance.alliance_training_loss(self.current_global_model))

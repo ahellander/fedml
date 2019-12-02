@@ -14,11 +14,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/fedml.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="191">
-              <caret line="96" column="23" selection-start-line="96" selection-start-column="4" selection-end-line="96" selection-end-column="23" />
+            <state relative-caret-position="421">
+              <caret line="459" column="29" lean-forward="true" selection-start-line="459" selection-start-column="29" selection-end-line="459" selection-end-column="29" />
               <folding>
                 <element signature="e#0#35#0" expanded="true" />
               </folding>
@@ -26,11 +26,11 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/cifarmodel.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="425">
-              <caret line="73" column="54" selection-start-line="73" selection-start-column="54" selection-end-line="73" selection-end-column="54" />
+            <state relative-caret-position="1013">
+              <caret line="120" column="49" selection-start-line="120" selection-start-column="49" selection-end-line="120" selection-end-column="49" />
               <folding>
                 <element signature="e#0#29#0" expanded="true" />
               </folding>
@@ -93,8 +93,8 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/fedml.py" />
         <option value="$PROJECT_DIR$/cifarmodel.py" />
+        <option value="$PROJECT_DIR$/fedml.py" />
       </list>
     </option>
   </component>
@@ -150,20 +150,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1573305871409</updated>
-    </task>
-    <task id="LOCAL-00039" summary="adding global score debugging">
-      <created>1573522480581</created>
-      <option name="number" value="00039" />
-      <option name="presentableId" value="LOCAL-00039" />
-      <option name="project" value="LOCAL" />
-      <updated>1573522480581</updated>
-    </task>
-    <task id="LOCAL-00040" summary="adding global score debugging">
-      <created>1573563548794</created>
-      <option name="number" value="00040" />
-      <option name="presentableId" value="LOCAL-00040" />
-      <option name="project" value="LOCAL" />
-      <updated>1573563548794</updated>
     </task>
     <task id="LOCAL-00041" summary="adding global score debugging">
       <created>1573563887730</created>
@@ -494,7 +480,21 @@
       <option name="project" value="LOCAL" />
       <updated>1574083703180</updated>
     </task>
-    <option name="localTasksCounter" value="88" />
+    <task id="LOCAL-00088" summary="added parameter model_size in average_weights">
+      <created>1575287157540</created>
+      <option name="number" value="00088" />
+      <option name="presentableId" value="LOCAL-00088" />
+      <option name="project" value="LOCAL" />
+      <updated>1575287157542</updated>
+    </task>
+    <task id="LOCAL-00089" summary="added parameter model_size in average_weights">
+      <created>1575287918352</created>
+      <option name="number" value="00089" />
+      <option name="presentableId" value="LOCAL-00089" />
+      <option name="project" value="LOCAL" />
+      <updated>1575287918352</updated>
+    </task>
+    <option name="localTasksCounter" value="90" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -531,7 +531,8 @@
     <MESSAGE value="trying to implement q score" />
     <MESSAGE value="debuging training_steps == None" />
     <MESSAGE value="added only used model weight where q_score&gt;0&#10;also added parameter['data_augmentation']" />
-    <option name="LAST_COMMIT_MESSAGE" value="added only used model weight where q_score&gt;0&#10;also added parameter['data_augmentation']" />
+    <MESSAGE value="added parameter model_size in average_weights" />
+    <option name="LAST_COMMIT_MESSAGE" value="added parameter model_size in average_weights" />
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/utils.py">
@@ -541,22 +542,22 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/fedml.py">
+    <entry file="file://$PROJECT_DIR$/cifarmodel.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="191">
-          <caret line="96" column="23" selection-start-line="96" selection-start-column="4" selection-end-line="96" selection-end-column="23" />
+        <state relative-caret-position="1013">
+          <caret line="120" column="49" selection-start-line="120" selection-start-column="49" selection-end-line="120" selection-end-column="49" />
           <folding>
-            <element signature="e#0#35#0" expanded="true" />
+            <element signature="e#0#29#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/cifarmodel.py">
+    <entry file="file://$PROJECT_DIR$/fedml.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="425">
-          <caret line="73" column="54" selection-start-line="73" selection-start-column="54" selection-end-line="73" selection-end-column="54" />
+        <state relative-caret-position="421">
+          <caret line="459" column="29" lean-forward="true" selection-start-line="459" selection-start-column="29" selection-end-line="459" selection-end-column="29" />
           <folding>
-            <element signature="e#0#29#0" expanded="true" />
+            <element signature="e#0#35#0" expanded="true" />
           </folding>
         </state>
       </provider>

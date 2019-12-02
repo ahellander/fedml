@@ -68,11 +68,9 @@ class KerasSequentialCifar(BaseLearner):
         avg_std = []
         if model_size is not None:
             data_points = np.sum(np.array(model_size))
-            print("data points: ", data_points)
         for l in range(len(weights[0])):
             lay_l = np.array([w[l] for w in weights])
             avg_std.append(np.mean(np.std(lay_l, 0)))
-            print("lay_l shape: ", lay_l.shape)
             if model_size is not None:
                 weight_l_avg = np.sum((lay_l.T*model_size/data_points).T,0 )
             else:
@@ -97,7 +95,6 @@ class KerasSequentialCifar(BaseLearner):
         batch_size = 32
         epochs = 1
 
-        print("partial fit starts")
         if batch_size == "inf":
             batch_size = x.shape[0]
 
@@ -119,7 +116,6 @@ class KerasSequentialCifar(BaseLearner):
         else:
             print("training steps: ", training_steps)
             ind = np.arange(x.shape[0])
-            print("ind: ", ind)
 
         if not data_augmentation:
             print('Not using data augmentation.')
