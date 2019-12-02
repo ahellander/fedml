@@ -699,7 +699,6 @@ class AllianceMember(object):
             data_set_index, data_order = partialModel.partial_fit(x=self.__x_train,
                                                                   y=self.__y_train,
                                                                   classes=self.classes,
-                                                                  epochs=nr_iter,
                                                                   data_set_index=self.data_set_index,
                                                                   data_order=self.data_order,
                                                                   training_steps=training_steps,
