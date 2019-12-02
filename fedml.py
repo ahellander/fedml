@@ -379,8 +379,8 @@ class FedAveragingClassifier(AllianceModel):
             try:
                 self.test_loss.append(self.alliance.alliance_test_loss(self.current_global_model))
 
-                self.test_loss_all.append(self.alliance.alliance_test_loss(self.current_global_model))
-                self.alliance.test_loss_all.append(self.test_loss_all[-1])
+                # self.test_loss_all.append(self.alliance.alliance_test_loss(self.current_global_model))
+                # self.alliance.test_loss_all.append(self.test_loss_all[-1])
 
                 # TODO: Implement early stopping
             except:
@@ -699,6 +699,7 @@ class AllianceMember(object):
             data_set_index, data_order = partialModel.partial_fit(x=self.__x_train,
                                                                   y=self.__y_train,
                                                                   classes=self.classes,
+                                                                  epochs=nr_iter,
                                                                   data_set_index=self.data_set_index,
                                                                   data_order=self.data_order,
                                                                   training_steps=training_steps,
