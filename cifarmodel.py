@@ -66,12 +66,15 @@ class KerasSequentialCifar(BaseLearner):
 
         avg_w = []
         avg_std = []
+        if model_size is not None:
+            data_points = np.sum(np.array(model_size))
+            print("data points: ", data_points)
         for l in range(len(weights[0])):
             lay_l = np.array([w[l] for w in weights])
             avg_std.append(np.mean(np.std(lay_l, 0)))
             print("lay_l shape: ", lay_l.shape)
             if model_size is not None:
-                weight_l_avg = np.sum(lay_l*model_size,0 )
+                weight_l_avg = np.sum((lay_l.T*model_size/data_points).T,0 )
             else:
                 weight_l_avg = np.mean(lay_l,0)
             avg_w.append(weight_l_avg)
