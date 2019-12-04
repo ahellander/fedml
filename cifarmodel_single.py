@@ -12,7 +12,7 @@ import keras.backend as K
 
 import psutil
 from keras.datasets import cifar10
-learning_rate = 0.01
+learning_rate = 0.001
 batch_size = 1028
 print("batch size: ", batch_size, ", learning rate: ", learning_rate)
 decay=0
