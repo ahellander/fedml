@@ -16,7 +16,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/fedml.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="293">
+            <state relative-caret-position="11458">
               <caret line="700" column="87" selection-start-line="700" selection-start-column="87" selection-end-line="700" selection-end-column="87" />
               <folding>
                 <element signature="e#0#35#0" expanded="true" />
@@ -28,8 +28,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/cifarmodel.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="146">
-              <caret line="90" column="30" lean-forward="true" selection-start-line="90" selection-start-column="30" selection-end-line="90" selection-end-column="30" />
+            <state relative-caret-position="1251">
+              <caret line="90" column="30" selection-start-line="90" selection-start-column="30" selection-end-line="90" selection-end-column="30" />
               <folding>
                 <element signature="e#0#29#0" expanded="true" />
               </folding>
@@ -40,8 +40,11 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/cifarmodel_single.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="17">
-              <caret line="13" selection-start-line="13" selection-end-line="13" />
+            <state relative-caret-position="102">
+              <caret line="16" column="68" selection-start-line="16" selection-start-column="68" selection-end-line="16" selection-end-column="68" />
+              <folding>
+                <element signature="e#0#13#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -57,7 +60,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>summary</find>
       <find>get_w</find>
       <find>compute_err</find>
       <find>virtual memory used</find>
@@ -87,9 +89,12 @@
       <find>def average_weights</find>
       <find>test_loss</find>
       <find>self.test_loss</find>
+      <find>y_data</find>
     </findStrings>
     <replaceStrings>
       <replace>data_order</replace>
+      <replace>x_train</replace>
+      <replace>y_train</replace>
     </replaceStrings>
   </component>
   <component name="Git.Settings">
@@ -165,27 +170,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1573305871409</updated>
-    </task>
-    <task id="LOCAL-00046" summary="adding global score debugging">
-      <created>1573723204451</created>
-      <option name="number" value="00046" />
-      <option name="presentableId" value="LOCAL-00046" />
-      <option name="project" value="LOCAL" />
-      <updated>1573723204451</updated>
-    </task>
-    <task id="LOCAL-00047" summary="adding global score debugging">
-      <created>1573727573977</created>
-      <option name="number" value="00047" />
-      <option name="presentableId" value="LOCAL-00047" />
-      <option name="project" value="LOCAL" />
-      <updated>1573727573977</updated>
-    </task>
-    <task id="LOCAL-00048" summary="adding global score debugging">
-      <created>1573728263825</created>
-      <option name="number" value="00048" />
-      <option name="presentableId" value="LOCAL-00048" />
-      <option name="project" value="LOCAL" />
-      <updated>1573728263825</updated>
     </task>
     <task id="LOCAL-00049" summary="adding global score debugging">
       <created>1573730269441</created>
@@ -509,7 +493,28 @@
       <option name="project" value="LOCAL" />
       <updated>1575313691271</updated>
     </task>
-    <option name="localTasksCounter" value="95" />
+    <task id="LOCAL-00095" summary="added single training model (for accuracy comparison)">
+      <created>1575320930425</created>
+      <option name="number" value="00095" />
+      <option name="presentableId" value="LOCAL-00095" />
+      <option name="project" value="LOCAL" />
+      <updated>1575320930426</updated>
+    </task>
+    <task id="LOCAL-00096" summary="added single training model (for accuracy comparison)">
+      <created>1575320976059</created>
+      <option name="number" value="00096" />
+      <option name="presentableId" value="LOCAL-00096" />
+      <option name="project" value="LOCAL" />
+      <updated>1575320976059</updated>
+    </task>
+    <task id="LOCAL-00097" summary="added single training model (for accuracy comparison)">
+      <created>1575321055633</created>
+      <option name="number" value="00097" />
+      <option name="presentableId" value="LOCAL-00097" />
+      <option name="project" value="LOCAL" />
+      <updated>1575321055633</updated>
+    </task>
+    <option name="localTasksCounter" value="98" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -562,7 +567,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/fedml.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="293">
+        <state relative-caret-position="11458">
           <caret line="700" column="87" selection-start-line="700" selection-start-column="87" selection-end-line="700" selection-end-column="87" />
           <folding>
             <element signature="e#0#35#0" expanded="true" />
@@ -572,8 +577,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/cifarmodel.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="146">
-          <caret line="90" column="30" lean-forward="true" selection-start-line="90" selection-start-column="30" selection-end-line="90" selection-end-column="30" />
+        <state relative-caret-position="1251">
+          <caret line="90" column="30" selection-start-line="90" selection-start-column="30" selection-end-line="90" selection-end-column="30" />
           <folding>
             <element signature="e#0#29#0" expanded="true" />
           </folding>
@@ -582,8 +587,11 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/cifarmodel_single.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="17">
-          <caret line="13" selection-start-line="13" selection-end-line="13" />
+        <state relative-caret-position="102">
+          <caret line="16" column="68" selection-start-line="16" selection-start-column="68" selection-end-line="16" selection-end-column="68" />
+          <folding>
+            <element signature="e#0#13#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
