@@ -172,6 +172,7 @@ class PartialIncrementalLearnerClassifier(AllianceModel):
             # Test loss, mean error rate on a  validation set
             try:
                 test_loss.append(self.alliance.alliance_test_loss(partialModel))
+                print("test_loss: ", test_loss)
                 # TODO: Implement early stopping
             except:
                 pass
@@ -287,7 +288,6 @@ class FedAveragingClassifier(AllianceModel):
         self.default_parameters = {"nr_global_iterations":100, "nr_local_iterations":1, "training_steps":None}
         self.weights_std = []
         self.test_loss = []
-        self.test_loss_all = []
 
 
         super().__init__(alliance)
