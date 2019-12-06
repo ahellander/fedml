@@ -39,7 +39,7 @@ def create_cifarmodel():
     model.add(Activation('softmax'))
 
     # initiate Adam optimizer
-    opt = keras.optimizers.Adam(learning_rate=0.001, decay=1e-6)
+    opt = keras.optimizers.Adam(learning_rate=0.001, decay=0)
     # opt = keras.optimizers.SGD(learning_rate=0.001)#, decay=1e-6)
 
     # Let's train the model using Adam
@@ -112,17 +112,19 @@ class KerasSequentialCifar(BaseLearner):
 
             ind += list(data_order[np.arange(start_ind,end_ind)])
             data_set_index = end_ind
+            shuffle = False
 
         else:
             print("training steps: ", training_steps)
             ind = np.arange(x.shape[0])
+            shuffle = True
 
         if not data_augmentation:
             print('Not using data augmentation.')
             self.model.fit(x[ind], y[ind],
                       batch_size=batch_size,
                       epochs=epochs,
-                      shuffle=False)
+                      shuffle=shuffle)
         else:
             # print('Using real-time data augmentation.')
             # print("before training(inside partial fit) -- virtual memory used: ", psutil.virtual_memory()[2], "%")
@@ -166,6 +168,6 @@ class KerasSequentialCifar(BaseLearner):
                                                        batch_size=batch_size),
                                                        epochs=epochs,
                                                        workers=4,
-                                                       shuffle=False)
+                                                       shuffle=shuffle)
             return data_set_index, data_order
 
