@@ -172,7 +172,7 @@ class PartialIncrementalLearnerClassifier(AllianceModel):
             # Test loss, mean error rate on a  validation set
             try:
                 test_loss.append(self.alliance.alliance_test_loss(partialModel))
-                print("test_loss: ", test_loss)
+                print("test_loss : ", test_loss)
                 # TODO: Implement early stopping
             except:
                 pass
