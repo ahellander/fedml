@@ -120,7 +120,7 @@ class KerasSequentialCifar(BaseLearner):
             shuffle = True
 
         if not data_augmentation:
-            print('Not using data augmentation.')
+            print('Not using data augmentation. ')
             self.model.fit(x[ind], y[ind],
                       batch_size=batch_size,
                       epochs=epochs,
