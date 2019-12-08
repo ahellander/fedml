@@ -1,5 +1,6 @@
 from abc import ABC, abstractmethod
-
+import pickle
+import os
 from utils import compute_errorRate
 import numpy as np
 from sklearn.model_selection import train_test_split
@@ -276,7 +277,7 @@ class BaggingPartialIncrementalLearnerClassifier(AllianceModel):
 class FedAveragingClassifier(AllianceModel):
     """  Difference here is that  we need to average parameters/weights in each iteration.
     Becomes ML framework (scikit-learn, Keras etc) dependent.  """ 
-    def __init__(self, alliance, base_learner = None):
+    def __init__(self, alliance, base_learner = None, name='example'):
 
         if base_learner is None:
             penalty = 'l2'
@@ -288,6 +289,14 @@ class FedAveragingClassifier(AllianceModel):
         self.default_parameters = {"nr_global_iterations":100, "nr_local_iterations":1, "training_steps":None}
         self.weights_std = []
         self.test_loss = []
+        nr = ""
+        while os.path.exists('test_loss_' + name + str(nr) + '.p'):
+            if nr == "":
+                nr = 1
+            else:
+                nr += 1
+        self.filename = 'test_loss_' + name + str(nr) + '.p'
+
 
 
         super().__init__(alliance)
@@ -302,10 +311,9 @@ class FedAveragingClassifier(AllianceModel):
             parameters["nr_global_iterations"] = 10
         if not "training_steps" in parameters:
             parameters["training_steps"] = None
+        if not "fractions" in parameters:
+            parameters["fractions"] = len(self.alliance.members)
 
-
-        training_loss = []
-        print("fit starts!")
         if not self.current_global_model:
             self.current_global_model = self.base_learner
 
@@ -328,34 +336,21 @@ class FedAveragingClassifier(AllianceModel):
             # round_models =[]
 
             # This step is a map operation - should happen in parallel/async
-            rand_indx = np.random.permutation(len(self.alliance.members))
-
+            rand_indx = np.random.permutation(len(self.alliance.members))[:parameters["fractions"]]
             global_weights = self.current_global_model.model.get_weights()
-            t0 = time.time()
+
 
             for indx in rand_indx:
-                # Each member gets its own copy of the model
-                # partialModel = copy.deepcopy(self.current_global_model)
-                # self.alliance.members[indx].set_model()
-                # print("Before set weights -- virtual memory used: ", psutil.virtual_memory()[2], "%")
-                self.alliance.members[indx].model.set_weights(global_weights)
-                # print("Before training -- virtual memory used: ", psutil.virtual_memory()[2], "%")
-                print("training starts model size: ",self.alliance.members[indx].data_size )
-                self.alliance.members[indx].train(self.alliance.members[indx].model,
-                                                  nr_iter=parameters["nr_local_iterations"],
-                                                  training_steps=parameters["training_steps"],
-                                                  data_augmentation=parameters["data_augmentation"])
-                # print("After training -- virtual memory used: ", psutil.virtual_memory()[2], "%")
 
-                # self.alliance.members[indx].train(partialModel,nr_iter=parameters["nr_local_iterations"])
-                # round_models.append(self.alliance.members[indx].model)
-                # print("After append model -- virtual memory used: ", psutil.virtual_memory()[2], "%")
+                self.alliance.members[indx].model.set_weights(global_weights)
+                self.alliance.members[indx].train(self.alliance.members[indx].model,
+                                                  parameters=parameters)
+                                                  # nr_iter=parameters["nr_local_iterations"],
+                                                  # training_steps=parameters["training_steps"],
+                                                  # data_augmentation=parameters["data_augmentation"])
 
 
             # Average the model updates  - here  we have a global synchronization step. Server should aggregate
-            print("training time: ", np.round(time.time() - t0, 4), "s.")
-            print("average model starts")
-            t0=time.time()
             if parameters['model_size_averaging'] == True:
                 temp_data = np.array([[member.model, member.data_size] for member in self.alliance.members])
                 all_models = list(temp_data[:,0])
@@ -365,99 +360,22 @@ class FedAveragingClassifier(AllianceModel):
                 all_models = [member.model for member in self.alliance.members]
                 new_weights, weights_std = self.current_global_model.average_weights(all_models)
 
-            print("average model ends: ", np.round(time.time()-t0 ,4), "s.")
-            t0=time.time()
 
-            # self.weights_std.append(weights_std)
-            # # old_weights = self.current_global_model.model.get_weights()
-            # old_weights = global_weights
-            #
-            # self.alliance.delta_glob_weights.append(weights_dist(old_weights,new_weights))
             self.current_global_model.set_weights(new_weights)
 
             # Test loss, mean error rate on a  validation set
             try:
                 self.test_loss.append(self.alliance.alliance_test_loss(self.current_global_model))
-
-                # self.test_loss_all.append(self.alliance.alliance_test_loss(self.current_global_model))
-                # self.alliance.test_loss_all.append(self.test_loss_all[-1])
+                pickle.dump(self.test_loss, open(self.filename, 'wb'))
 
                 # TODO: Implement early stopping
             except:
                 pass
 
-            # self.alliance.global_score_local_models()
 
-            # approved_models = []
-            # for member in self.alliance.members:
-            #     if member.q_score[-1]>0:
-            #         approved_models.append(member.model)
-            #
-            # if len(approved_models) > 0:
-            #     approved_weights, approved_weights_std = self.current_global_model.average_weights(approved_models)
-            #     self.current_global_model.set_weights(approved_weights)
-            #     self.test_loss.append(self.alliance.alliance_test_loss(self.current_global_model))
-            # else:
-            #     #reset old model
-            #     self.current_global_model.set_weights(old_weights)
-            #     self.test_loss.append(-1)
-
-
-            # print("set weights/globalscore locar models ends: ", np.round(time.time() - t0, 4), "s.")
-            t0 = time.time()
-
-            # for member in self.alliance.members:
-            #     pw = member.model.model.get_weights()
-            #     member.delta_weights.append(weights_dist(old_weights,pw))
-            #     member.weights_spread.append(weights_dist(new_weights, pw))
-            #
-            # print("weights dist ends: ", np.round(time.time() - t0, 4), "s.")
-            t0 = time.time()
-
-
-
-            # self.score_test_set.append(self.alliance_test_loss(self.))
-            # print("---------------------------------------------------------")
-            # for member in self.alliance.members:
-            #     print("member size ", member.data_size, " global score: ", np.round(np.array(member.global_score),3))
-            # print("---------------------------------------------------------")
-            #
-            # for member in self.alliance.members:
-            #     print("member size ", member.data_size, " global score: ",
-            #           np.round(np.array(member.score_test_set[-5:]), 2),
-            #           ", total score: ", np.round(np.sum(np.array(member.score_test_set)), 3))
-            # print("---------------------------------------------------------")
-            #
-            # for member in self.alliance.members:
-            #     print("member size ", member.data_size, " delta weights: ",
-            #           [np.format_float_scientific(mdw,2) for mdw in member.delta_weights[-5:]],
-            #           ", mean: ", np.round(np.mean(np.array(member.delta_weights)),3))
-            #
-            # print("---------------------------------------------------------")
-            #
-            # for member in self.alliance.members:
-            #     print("member size ", member.data_size, " weights spread: ",
-            #           [np.format_float_scientific(mws,2) for mws in member.weights_spread[-5:]],
-            #           ", mean: ", np.round(np.mean(np.array(member.weights_spread)), 3))
-            #
-            # print("---------------------------------------------------------")
-            #
-            # for member in self.alliance.members:
-            #     print("member size ", member.data_size, " q_score: ",
-            #           [np.round(qs, 3) for qs in member.q_score[-5:]],
-            #           ", mean: ", np.round(np.mean(np.array(member.q_score)), 3))
-            #
-            # print("---------------------------------------------------------")
-            #
-            # print("delta global weights: ",
-            #       [np.format_float_scientific(dgw,2) for dgw in self.alliance.delta_glob_weights])
-
-                # Training loss, mean error rate over all alliance training data
-            # training_loss.append(self.alliance.alliance_training_loss(self.current_global_model))
-            # print("training loss: ", np.round(np.array(training_loss),3))
             print("test_loss: ", np.round(np.array(self.test_loss), 3))
 
-        return self.test_loss, self.weights_std
+        return self.test_loss
 
     def predict(self,x_test):
         """ fdfsd """ 
@@ -689,7 +607,8 @@ class AllianceMember(object):
 
         return self.model
 
-    def train(self, partialModel, nr_iter=1, training_steps=None, data_augmentation=True):
+    def train(self, partialModel, nr_iter=1, parameters=None): # training_steps=None, data_augmentation=True,
+             # batch_size=32, learning_rate=0.001, decay=0):
         """ Update global model by training nr_iter iterations on local training data. """
 
         for j in range(nr_iter):
@@ -701,8 +620,12 @@ class AllianceMember(object):
                                                                   classes=self.classes,
                                                                   data_set_index=self.data_set_index,
                                                                   data_order=self.data_order,
-                                                                  training_steps=training_steps,
-                                                                  data_augmentation=data_augmentation)
+                                                                  # training_steps=training_steps,
+                                                                  # data_augmentation=data_augmentation,
+                                                                  parameters=parameters)
+                                                                  # batch_size=batch_size,
+                                                                  # learning_rate=learning_rate,
+                                                                  # decay=decay)
             self.data_set_index = data_set_index
             self.data_order = data_order
 
