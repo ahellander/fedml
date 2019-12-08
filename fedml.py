@@ -355,7 +355,7 @@ class FedAveragingClassifier(AllianceModel):
                 temp_data = np.array([[member.model, member.data_size] for member in self.alliance.members])
                 all_models = list(temp_data[:,0])
                 model_sizes = list(temp_data[:,1])
-                new_weights, weights_std = self.current_global_model.average_weights(all_models, model_sizes)
+                new_weights, weights_std = self.current_global_model.average_weights(all_models, parameters)
             else:
                 all_models = [member.model for member in self.alliance.members]
                 new_weights, weights_std = self.current_global_model.average_weights(all_models,parameters)
