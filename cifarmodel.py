@@ -9,7 +9,7 @@ import numpy as np
 import psutil
 
 
-def create_cifarmodel():
+def create_cifarmodel(optimizer, learning_rate, decay):
     model = Sequential()
     model.add(Conv2D(32, (3, 3), padding='same',
                      input_shape=(32,32,3)))
@@ -39,7 +39,8 @@ def create_cifarmodel():
     model.add(Activation('softmax'))
 
     # initiate Adam optimizer
-    opt = keras.optimizers.Adam(learning_rate=0.001, decay=0)
+    opt = optimizer(learning_rate=learning_rate, decay=decay)
+    # opt = keras.optimizers.Adam(learning_rate=0.001, decay=0)
     # opt = keras.optimizers.SGD(learning_rate=0.001)#, decay=1e-6)
 
     # Let's train the model using Adam
@@ -52,27 +53,33 @@ def create_cifarmodel():
 class KerasSequentialCifar(BaseLearner):
     """  Keras Sequential base learner."""
 
-    def __init__(self):
-        self.model = create_cifarmodel()
+    def __init__(self,parameters=None):
+        if not "optimizer" in parameters:
+            parameters["optimizer"] = keras.optimizers.Adam
+        if not "learning_rate" in parameters:
+            parameters["learning_rate"] = 0.001
+        if not "optimizer" in parameters:
+            parameters["decay"] = 0
+        self.model = create_cifarmodel(parameters["optimizer"], parameters["learning_rate"], parameters["decay"])
         self.datagen =None
 
 
     @staticmethod
-    def average_weights(models,model_size=None):
+    def average_weights(models,parameters):
         """ fdfdsfs """
-        # print("Before average weights -- virtual memory used: ", psutil.virtual_memory()[2], "%")
-
+        if not "optimizer" in parameters:
+            parameters["model_size"] = None
         weights = [model.model.get_weights() for model in models]
 
         avg_w = []
         avg_std = []
-        if model_size is not None:
-            data_points = np.sum(np.array(model_size))
+        if parameters["model_size"] is not None:
+            data_points = np.sum(np.array(parameters["model_size"]))
         for l in range(len(weights[0])):
             lay_l = np.array([w[l] for w in weights])
             avg_std.append(np.mean(np.std(lay_l, 0)))
-            if model_size is not None:
-                weight_l_avg = np.sum((lay_l.T*model_size/data_points).T,0 )
+            if parameters["model_size"] is not None:
+                weight_l_avg = np.sum((lay_l.T*parameters["model_size"]/data_points).T,0 )
             else:
                 weight_l_avg = np.mean(lay_l,0)
             avg_w.append(weight_l_avg)
@@ -88,21 +95,26 @@ class KerasSequentialCifar(BaseLearner):
         return to_categorical(self.model.predict_classes(x), num_classes=10)
         # return self.model.predict(x)
 
-    def partial_fit(self, x, y, data_order, classes=None, data_set_index=0, training_steps=None,
-                    data_augmentation=True):
+    def partial_fit(self, x, y, data_order, classes=None, data_set_index=0, parameters=None): # training_steps=None,
+                    # data_augmentation=True,batch_size=32):
         """ Do a partial fit. """
-        # print("partial fit start -- virtual memory used: ", psutil.virtual_memory()[2], "%")
-        batch_size = 32
         epochs = 1
 
-        if batch_size == "inf":
-            batch_size = x.shape[0]
+        if not "batch_size" in parameters:
+            parameters["batch_size"] = 32
+        if not "training_steps" in parameters:
+            parameters["training_steps"] = None
+        if not "data_augmentation" in parameters:
+            parameters["data_augmentation"] = True
 
-        if training_steps is not None:
-            print("training steps is not None: training steps: ", training_steps)
+        if parameters["batch_size"] == "inf":
+            parameters["batch_size"] = x.shape[0]
+
+        if parameters["training_steps"] is not None:
+            print("training steps is not None: training steps: ", parameters["training_steps"])
             epochs = 1
             start_ind = data_set_index
-            end_ind = start_ind + batch_size * training_steps
+            end_ind = start_ind + parameters["batch_size"] * parameters["training_steps"]
             ind = []
             while end_ind > x.shape[0]:
                 end_ind = end_ind - x.shape[0]
@@ -112,17 +124,17 @@ class KerasSequentialCifar(BaseLearner):
 
             ind += list(data_order[np.arange(start_ind,end_ind)])
             data_set_index = end_ind
-            shuffle = False
+            shuffle = True
 
         else:
-            print("training steps: ", training_steps)
+            print("training steps: ", parameters["training_steps"])
             ind = np.arange(x.shape[0])
             shuffle = True
 
-        if not data_augmentation:
+        if not parameters["data_augmentation"]:
             print('Not using data augmentation. ')
             self.model.fit(x[ind], y[ind],
-                      batch_size=batch_size,
+                      batch_size=parameters["batch_size"],
                       epochs=epochs,
                       shuffle=shuffle)
         else:
@@ -165,7 +177,7 @@ class KerasSequentialCifar(BaseLearner):
             # Fit the model on the batches generated by datagen.flow().
             # print("before training(inside partial fit after datagen) -- virtual memory used: ", psutil.virtual_memory()[2], "%")
             self.model.fit_generator(self.datagen.flow(x[ind], y[ind],
-                                                       batch_size=batch_size),
+                                                       batch_size=parameters["batch_size"]),
                                                        epochs=epochs,
                                                        workers=4,
                                                        shuffle=shuffle)
