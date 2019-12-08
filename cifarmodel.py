@@ -70,7 +70,6 @@ class KerasSequentialCifar(BaseLearner):
         if not "optimizer" in parameters:
             parameters["model_size"] = None
         weights = [model.model.get_weights() for model in models]
-
         avg_w = []
         avg_std = []
         if parameters["model_size"] is not None:
