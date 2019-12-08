@@ -612,20 +612,15 @@ class AllianceMember(object):
         """ Update global model by training nr_iter iterations on local training data. """
 
         for j in range(nr_iter):
-            # train_index = np.random.permutation(len(self.__x_train))
-            # print("after train_index -- virtual memory used: ", psutil.virtual_memory()[2], "%")
+
 
             data_set_index, data_order = partialModel.partial_fit(x=self.__x_train,
                                                                   y=self.__y_train,
                                                                   classes=self.classes,
                                                                   data_set_index=self.data_set_index,
                                                                   data_order=self.data_order,
-                                                                  # training_steps=training_steps,
-                                                                  # data_augmentation=data_augmentation,
                                                                   parameters=parameters)
-                                                                  # batch_size=batch_size,
-                                                                  # learning_rate=learning_rate,
-                                                                  # decay=decay)
+
             self.data_set_index = data_set_index
             self.data_order = data_order
 
