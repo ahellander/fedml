@@ -2,7 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="fa5be9ab-e33f-4f24-9fa0-0a791864d48f" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cifarmodel.py" beforeDir="false" afterPath="$PROJECT_DIR$/cifarmodel.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fedml.py" beforeDir="false" afterPath="$PROJECT_DIR$/fedml.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -12,11 +14,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/fedml.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="357">
-              <caret line="609" column="62" selection-start-line="609" selection-start-column="62" selection-end-line="609" selection-end-column="62" />
+            <state relative-caret-position="208">
+              <caret line="362" lean-forward="true" selection-start-line="362" selection-end-line="362" />
               <folding>
                 <element signature="e#0#35#0" expanded="true" />
               </folding>
@@ -24,11 +26,11 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/cifarmodel.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-272">
-              <caret line="71" column="65" selection-start-line="71" selection-start-column="65" selection-end-line="71" selection-end-column="65" />
+            <state relative-caret-position="612">
+              <caret line="69" selection-start-line="69" selection-end-line="69" />
               <folding>
                 <element signature="e#0#29#0" expanded="true" />
               </folding>
@@ -87,8 +89,8 @@
       <find>self.test_loss</find>
       <find>y_data</find>
       <find>parameter</find>
-      <find>learning_rate</find>
       <find>paramete</find>
+      <find>learning_rate</find>
     </findStrings>
     <replaceStrings>
       <replace>data_order</replace>
@@ -107,8 +109,8 @@
     <option name="CHANGED_PATHS">
       <list>
         <option value="$PROJECT_DIR$/cifarmodel_single.py" />
-        <option value="$PROJECT_DIR$/fedml.py" />
         <option value="$PROJECT_DIR$/cifarmodel.py" />
+        <option value="$PROJECT_DIR$/fedml.py" />
       </list>
     </option>
   </component>
@@ -169,27 +171,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1573305871409</updated>
-    </task>
-    <task id="LOCAL-00058" summary="fixing output text">
-      <created>1573822289187</created>
-      <option name="number" value="00058" />
-      <option name="presentableId" value="LOCAL-00058" />
-      <option name="project" value="LOCAL" />
-      <updated>1573822289188</updated>
-    </task>
-    <task id="LOCAL-00059" summary="added weight update statistics">
-      <created>1573826137201</created>
-      <option name="number" value="00059" />
-      <option name="presentableId" value="LOCAL-00059" />
-      <option name="project" value="LOCAL" />
-      <updated>1573826137201</updated>
-    </task>
-    <task id="LOCAL-00060" summary="added weight update statistics">
-      <created>1573826272706</created>
-      <option name="number" value="00060" />
-      <option name="presentableId" value="LOCAL-00060" />
-      <option name="project" value="LOCAL" />
-      <updated>1573826272706</updated>
     </task>
     <task id="LOCAL-00061" summary="added weight update statistics">
       <created>1573827486998</created>
@@ -513,7 +494,28 @@
       <option name="project" value="LOCAL" />
       <updated>1575820677001</updated>
     </task>
-    <option name="localTasksCounter" value="107" />
+    <task id="LOCAL-00107" summary="added alot of parameter settings to the fedAVG">
+      <created>1575822939065</created>
+      <option name="number" value="00107" />
+      <option name="presentableId" value="LOCAL-00107" />
+      <option name="project" value="LOCAL" />
+      <updated>1575822939065</updated>
+    </task>
+    <task id="LOCAL-00108" summary="added alot of parameter settings to the fedAVG">
+      <created>1575823120834</created>
+      <option name="number" value="00108" />
+      <option name="presentableId" value="LOCAL-00108" />
+      <option name="project" value="LOCAL" />
+      <updated>1575823120834</updated>
+    </task>
+    <task id="LOCAL-00109" summary="code cleaning">
+      <created>1575823348426</created>
+      <option name="number" value="00109" />
+      <option name="presentableId" value="LOCAL-00109" />
+      <option name="project" value="LOCAL" />
+      <updated>1575823348426</updated>
+    </task>
+    <option name="localTasksCounter" value="110" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -557,7 +559,8 @@
     <MESSAGE value="changed some hyper parameters" />
     <MESSAGE value="fixing test loss for PIL" />
     <MESSAGE value="added alot of parameter settings to the fedAVG" />
-    <option name="LAST_COMMIT_MESSAGE" value="added alot of parameter settings to the fedAVG" />
+    <MESSAGE value="code cleaning" />
+    <option name="LAST_COMMIT_MESSAGE" value="code cleaning" />
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/utils.py">
@@ -577,22 +580,22 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/fedml.py">
+    <entry file="file://$PROJECT_DIR$/cifarmodel.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="357">
-          <caret line="609" column="62" selection-start-line="609" selection-start-column="62" selection-end-line="609" selection-end-column="62" />
+        <state relative-caret-position="612">
+          <caret line="69" selection-start-line="69" selection-end-line="69" />
           <folding>
-            <element signature="e#0#35#0" expanded="true" />
+            <element signature="e#0#29#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/cifarmodel.py">
+    <entry file="file://$PROJECT_DIR$/fedml.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-272">
-          <caret line="71" column="65" selection-start-line="71" selection-start-column="65" selection-end-line="71" selection-end-column="65" />
+        <state relative-caret-position="208">
+          <caret line="362" lean-forward="true" selection-start-line="362" selection-end-line="362" />
           <folding>
-            <element signature="e#0#29#0" expanded="true" />
+            <element signature="e#0#35#0" expanded="true" />
           </folding>
         </state>
       </provider>
