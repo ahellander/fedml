@@ -3,6 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="fa5be9ab-e33f-4f24-9fa0-0a791864d48f" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cifarmodel.py" beforeDir="false" afterPath="$PROJECT_DIR$/cifarmodel.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/fedml.py" beforeDir="false" afterPath="$PROJECT_DIR$/fedml.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -16,8 +17,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/fedml.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="412">
-              <caret line="174" column="46" selection-start-line="174" selection-start-column="46" selection-end-line="174" selection-end-column="46" />
+            <state relative-caret-position="391">
+              <caret line="609" column="62" selection-start-line="609" selection-start-column="62" selection-end-line="609" selection-end-column="62" />
               <folding>
                 <element signature="e#0#35#0" expanded="true" />
               </folding>
@@ -28,8 +29,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/cifarmodel.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1088">
-              <caret line="90" column="30" selection-start-line="90" selection-start-column="30" selection-end-line="90" selection-end-column="30" />
+            <state relative-caret-position="442">
+              <caret line="97" column="93" selection-start-line="97" selection-start-column="93" selection-end-line="97" selection-end-column="93" />
               <folding>
                 <element signature="e#0#29#0" expanded="true" />
               </folding>
@@ -40,7 +41,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/cifarmodel_single.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="503">
+            <state relative-caret-position="1122">
               <caret line="121" column="60" selection-start-line="121" selection-start-column="32" selection-end-line="121" selection-end-column="60" />
               <folding>
                 <element signature="e#0#13#0" expanded="true" />
@@ -60,9 +61,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>get_w</find>
-      <find>compute_err</find>
-      <find>virtual memory used</find>
       <find>new_order</find>
       <find>score_matr</find>
       <find>average_weights</find>
@@ -90,6 +88,9 @@
       <find>test_loss</find>
       <find>self.test_loss</find>
       <find>y_data</find>
+      <find>parameter</find>
+      <find>paramete</find>
+      <find>learning_rate</find>
     </findStrings>
     <replaceStrings>
       <replace>data_order</replace>
@@ -107,8 +108,8 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/cifarmodel.py" />
         <option value="$PROJECT_DIR$/cifarmodel_single.py" />
+        <option value="$PROJECT_DIR$/cifarmodel.py" />
         <option value="$PROJECT_DIR$/fedml.py" />
       </list>
     </option>
@@ -170,34 +171,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1573305871409</updated>
-    </task>
-    <task id="LOCAL-00053" summary="adding global score debugging">
-      <created>1573749130428</created>
-      <option name="number" value="00053" />
-      <option name="presentableId" value="LOCAL-00053" />
-      <option name="project" value="LOCAL" />
-      <updated>1573749130428</updated>
-    </task>
-    <task id="LOCAL-00054" summary="fixing output text">
-      <created>1573749626343</created>
-      <option name="number" value="00054" />
-      <option name="presentableId" value="LOCAL-00054" />
-      <option name="project" value="LOCAL" />
-      <updated>1573749626343</updated>
-    </task>
-    <task id="LOCAL-00055" summary="fixing output text">
-      <created>1573749824528</created>
-      <option name="number" value="00055" />
-      <option name="presentableId" value="LOCAL-00055" />
-      <option name="project" value="LOCAL" />
-      <updated>1573749824528</updated>
-    </task>
-    <task id="LOCAL-00056" summary="fixing output text">
-      <created>1573751285736</created>
-      <option name="number" value="00056" />
-      <option name="presentableId" value="LOCAL-00056" />
-      <option name="project" value="LOCAL" />
-      <updated>1573751285736</updated>
     </task>
     <task id="LOCAL-00057" summary="fixing output text">
       <created>1573820568051</created>
@@ -514,15 +487,43 @@
       <option name="project" value="LOCAL" />
       <updated>1575547781620</updated>
     </task>
-    <option name="localTasksCounter" value="102" />
+    <task id="LOCAL-00102" summary="fixing test loss for PIL">
+      <created>1575653756656</created>
+      <option name="number" value="00102" />
+      <option name="presentableId" value="LOCAL-00102" />
+      <option name="project" value="LOCAL" />
+      <updated>1575653756656</updated>
+    </task>
+    <task id="LOCAL-00103" summary="fixing test loss for PIL">
+      <created>1575653868927</created>
+      <option name="number" value="00103" />
+      <option name="presentableId" value="LOCAL-00103" />
+      <option name="project" value="LOCAL" />
+      <updated>1575653868927</updated>
+    </task>
+    <task id="LOCAL-00104" summary="fixing test loss for PIL">
+      <created>1575656537562</created>
+      <option name="number" value="00104" />
+      <option name="presentableId" value="LOCAL-00104" />
+      <option name="project" value="LOCAL" />
+      <updated>1575656537562</updated>
+    </task>
+    <task id="LOCAL-00105" summary="fixing test loss for PIL">
+      <created>1575656688136</created>
+      <option name="number" value="00105" />
+      <option name="presentableId" value="LOCAL-00105" />
+      <option name="project" value="LOCAL" />
+      <updated>1575656688136</updated>
+    </task>
+    <option name="localTasksCounter" value="106" />
     <servers />
   </component>
   <component name="ToolWindowManager">
     <frame x="52" y="44" width="1400" height="784" extended-state="0" />
     <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.22507331" />
-      <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
+      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.4992343" visible="true" weight="0.22507331" />
+      <window_info active="true" id="Structure" order="1" sideWeight="0.5007657" side_tool="true" visible="true" weight="0.22507331" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
@@ -556,7 +557,8 @@
     <MESSAGE value="removed parameter epochs to partial_fit (nr. of epochs is included in alliance member train)" />
     <MESSAGE value="added single training model (for accuracy comparison)" />
     <MESSAGE value="changed some hyper parameters" />
-    <option name="LAST_COMMIT_MESSAGE" value="changed some hyper parameters" />
+    <MESSAGE value="fixing test loss for PIL" />
+    <option name="LAST_COMMIT_MESSAGE" value="fixing test loss for PIL" />
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/utils.py">
@@ -568,7 +570,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/cifarmodel_single.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="503">
+        <state relative-caret-position="1122">
           <caret line="121" column="60" selection-start-line="121" selection-start-column="32" selection-end-line="121" selection-end-column="60" />
           <folding>
             <element signature="e#0#13#0" expanded="true" />
@@ -578,8 +580,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/cifarmodel.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1088">
-          <caret line="90" column="30" selection-start-line="90" selection-start-column="30" selection-end-line="90" selection-end-column="30" />
+        <state relative-caret-position="442">
+          <caret line="97" column="93" selection-start-line="97" selection-start-column="93" selection-end-line="97" selection-end-column="93" />
           <folding>
             <element signature="e#0#29#0" expanded="true" />
           </folding>
@@ -588,8 +590,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/fedml.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="412">
-          <caret line="174" column="46" selection-start-line="174" selection-start-column="46" selection-end-line="174" selection-end-column="46" />
+        <state relative-caret-position="391">
+          <caret line="609" column="62" selection-start-line="609" selection-start-column="62" selection-end-line="609" selection-end-column="62" />
           <folding>
             <element signature="e#0#35#0" expanded="true" />
           </folding>
