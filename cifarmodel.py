@@ -239,25 +239,30 @@ class KerasSequentialCifar(BaseLearner):
     """  Keras Sequential base learner."""
 
     def __init__(self,parameters=None):
-        if not "optimizer" in parameters:
+        if "optimizer" not in parameters:
             parameters["optimizer"] = keras.optimizers.Adam
-        if not "learning_rate" in parameters:
+        if "learning_rate" not in parameters:
             parameters["learning_rate"] = 0.001
-        if not "optimizer" in parameters:
+        if "optimizer" not in parameters:
             parameters["decay"] = 0
         self.model = create_cifarmodel(parameters["optimizer"], parameters["learning_rate"], parameters["decay"])
         self.datagen =None
 
 
     @staticmethod
-    def average_weights(models,parameters):
+    def average_weights(models, parameters):
         """ fdfdsfs """
 
         weights = [model.model.get_weights() for model in models]
         avg_w = []
         avg_std = []
+        if "model_size" not in parameters:
+            parameters["model_size"] = None
+
+        print("parameters: ", parameters)
         if parameters["model_size"] is not None:
             data_points = np.sum(np.array(parameters["model_size"]))
+
         for l in range(len(weights[0])):
             lay_l = np.array([w[l] for w in weights])
             avg_std.append(np.mean(np.std(lay_l, 0)))
