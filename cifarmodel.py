@@ -67,7 +67,7 @@ class KerasSequentialCifar(BaseLearner):
     @staticmethod
     def average_weights(models,parameters):
         """ fdfdsfs """
-        if not "optimizer" in parameters:
+        if not "model_size" in parameters:
             parameters["model_size"] = None
         weights = [model.model.get_weights() for model in models]
         avg_w = []
