@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 from fedml import BaseLearner
 import keras
 from keras.utils import to_categorical
