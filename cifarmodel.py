@@ -118,7 +118,7 @@ class KerasSequentialCifar(BaseLearner):
             print("training steps: ", training_steps)
             ind = np.arange(x.shape[0])
             shuffle = True
-
+        print("shuffle: ", shuffle)
         if not data_augmentation:
             print('Not using data augmentation. ')
             self.model.fit(x[ind], y[ind],
