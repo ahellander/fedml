@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 from fedml import BaseLearner
 import keras
 from keras.utils import to_categorical
@@ -183,7 +182,7 @@ class KerasSequentialCifar(BaseLearner):
                                                        shuffle=shuffle)
             return data_set_index, data_order
 
-=======
+
 from fedml import BaseLearner
 import keras
 from keras.utils import to_categorical
@@ -367,4 +366,4 @@ class KerasSequentialCifar(BaseLearner):
                                                        shuffle=shuffle)
             return data_set_index, data_order
 
->>>>>>> 401e795d6783f91b06e54ad1357ab49fb9f1499d
+
