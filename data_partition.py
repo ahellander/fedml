@@ -46,6 +46,7 @@ def non_iid_classification_data_partitioning(x_data, y_data, N=1, M=2):
         #y_data is one hot type
         classes = np.arange(np.array(y_data).shape[-1])
         l = np.eye(10)
+
         sorted_ind = np.array([np.where([list(y_) == list(l[i]) for y_ in y_data])[0] for i in range(len(classes))])
 
     part_len = N*M//len(classes)
