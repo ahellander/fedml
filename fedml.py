@@ -383,7 +383,6 @@ class FedAveragingClassifier(AllianceModel):
 
     def global_score_local_models(self):
 
-
         # average all models score
         model_members = [self.alliance.members[m].model for m in
                          list(set(np.arange(len(self.members))))]
