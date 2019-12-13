@@ -311,8 +311,8 @@ class FedAveragingClassifier(AllianceModel):
             parameters["nr_global_iterations"] = 10
         if not "training_steps" in parameters:
             parameters["training_steps"] = None
-        if not "fractions" in parameters:
-            parameters["fractions"] = len(self.alliance.members)
+        if not "c_parameter" in parameters:
+            parameters["c_parameter"] = len(self.alliance.members)
 
         if not self.current_global_model:
             self.current_global_model = self.base_learner
@@ -336,7 +336,7 @@ class FedAveragingClassifier(AllianceModel):
             # round_models =[]
 
             # This step is a map operation - should happen in parallel/async
-            rand_indx = np.random.permutation(len(self.alliance.members))[:parameters["fractions"]]
+            rand_indx = np.random.permutation(len(self.alliance.members))[:parameters["c_parameter"]]
             global_weights = self.current_global_model.model.get_weights()
 
 
