@@ -15,7 +15,7 @@ from sklearn.model_selection import GridSearchCV
 import matplotlib.pyplot as plt
 from random import sample
 import copy
-import  math
+import math
 import copy
 import psutil
 import time
@@ -288,6 +288,7 @@ class FedAveragingClassifier(AllianceModel):
         self.current_global_model = None
         self.default_parameters = {"nr_global_iterations":100, "nr_local_iterations":1, "training_steps":None}
         self.weights_std = []
+        self.training_loss = []
         self.test_loss = []
         nr = ""
         while os.path.exists('test_loss_' + name + str(nr) + '.p'):
@@ -318,13 +319,7 @@ class FedAveragingClassifier(AllianceModel):
             self.current_global_model = self.base_learner
 
         if not self.alliance.temp_model:
-            print("alliance temp model: ", self.alliance.temp_model)
             self.alliance.temp_model = self.base_learner
-            print("alliance temp model: ", self.alliance.temp_model)
-        else:
-            print("else: alliance temp model: ", self.alliance.temp_model)
-
-
 
         for member in self.alliance.members:
             member.set_model(copy.deepcopy(self.current_global_model))
@@ -333,35 +328,28 @@ class FedAveragingClassifier(AllianceModel):
             print("global epoch: ", j)
             print("virtual memory used: ", psutil.virtual_memory()[2], "%")
 
-            # round_models =[]
-
             # This step is a map operation - should happen in parallel/async
             rand_indx = np.random.permutation(len(self.alliance.members))[:parameters["c_parameter"]]
             global_weights = self.current_global_model.model.get_weights()
-
 
             for indx in rand_indx:
 
                 self.alliance.members[indx].model.set_weights(global_weights)
                 self.alliance.members[indx].train(self.alliance.members[indx].model,
                                                   parameters=parameters)
-                                                  # nr_iter=parameters["nr_local_iterations"],
-                                                  # training_steps=parameters["training_steps"],
-                                                  # data_augmentation=parameters["data_augmentation"])
-
 
             # Average the model updates  - here  we have a global synchronization step. Server should aggregate
             if parameters['model_size_averaging'] == True:
                 temp_data = np.array([[member.model, member.data_size] for member in self.alliance.members])
                 all_models = list(temp_data[:,0])
-                model_sizes = list(temp_data[:,1])
+                parameters['model_sizes'] = list(temp_data[:,1])
                 new_weights, weights_std = self.current_global_model.average_weights(all_models, parameters)
             else:
                 all_models = [member.model for member in self.alliance.members]
                 new_weights, weights_std = self.current_global_model.average_weights(all_models,parameters)
 
-
             self.current_global_model.set_weights(new_weights)
+            self.training_loss.append(self.alliance.alliance_training_loss(self.current_global_model))
 
             # Test loss, mean error rate on a  validation set
             try:
