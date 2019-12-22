@@ -1,5 +1,6 @@
 from abc import ABC, abstractmethod
-
+import pickle
+import os
 from utils import compute_errorRate
 import numpy as np
 from sklearn.model_selection import train_test_split
@@ -14,11 +15,14 @@ from sklearn.model_selection import GridSearchCV
 import matplotlib.pyplot as plt
 from random import sample
 import copy
-import  math
+import math
 import copy
+import psutil
+import time
+
 
 import keras
-from fyrai.runtime.runtime import Runtime
+# from fyrai.runtime.runtime import Runtime
 from keras.layers import Conv2D, MaxPooling2D
 from keras.layers import Dense, Dropout, Flatten
 from keras.models import Sequential
@@ -76,6 +80,9 @@ class KerasSequentialBaseLearner(BaseLearner):
 
     def predict(self,x):
         y = self.model.predict(x)
+
+
+
 
 class SGDBaseLearner(BaseLearner):
     """ sklearn SGDClassifier base learner. """
@@ -166,6 +173,7 @@ class PartialIncrementalLearnerClassifier(AllianceModel):
             # Test loss, mean error rate on a  validation set
             try:
                 test_loss.append(self.alliance.alliance_test_loss(partialModel))
+                print("test_loss : ", test_loss)
                 # TODO: Implement early stopping
             except:
                 pass
@@ -269,7 +277,7 @@ class BaggingPartialIncrementalLearnerClassifier(AllianceModel):
 class FedAveragingClassifier(AllianceModel):
     """  Difference here is that  we need to average parameters/weights in each iteration.
     Becomes ML framework (scikit-learn, Keras etc) dependent.  """ 
-    def __init__(self, alliance, base_learner = None):
+    def __init__(self, alliance, base_learner = None, name='example'):
 
         if base_learner is None:
             penalty = 'l2'
@@ -278,52 +286,119 @@ class FedAveragingClassifier(AllianceModel):
                                             alpha=alpha, max_iter=100,  warm_start=False)
         self.base_learner = base_learner
         self.current_global_model = None
-        self.default_parameters = {"nr_global_iterations":100, "nr_local_iterations":1}
+        self.default_parameters = {"nr_global_iterations":100, "nr_local_iterations":1, "training_steps":None}
+        self.weights_std = []
+        self.training_loss = []
+        self.test_loss = []
+        nr = ""
+        while os.path.exists('test_loss_' + name + str(nr) + '.p'):
+            if nr == "":
+                nr = 1
+            else:
+                nr += 1
+        self.filename = 'test_loss_' + name + str(nr) + '.p'
+
+
 
         super().__init__(alliance)
 
 
     def fit(self, parameters=None):
+
         """  """
-        training_loss = []
-        test_loss = []
+
+        # fill default values in parameters
+        if not "nr_global_iterations" in parameters:
+            parameters["nr_global_iterations"] = 10
+        if not "training_steps" in parameters:
+            parameters["training_steps"] = None
+        if not "c_parameter" in parameters:
+            parameters["c_parameter"] = len(self.alliance.members)
 
         if not self.current_global_model:
-            self.current_global_model  = self.base_learner
+            self.current_global_model = self.base_learner
 
+        if not self.alliance.temp_model:
+            self.alliance.temp_model = self.base_learner
+
+        for member in self.alliance.members:
+            member.set_model(copy.deepcopy(self.current_global_model))
         #  Start training 
         for j in range(parameters["nr_global_iterations"]):
-
-            round_models =[]
+            print("global epoch: ", j)
+            print("virtual memory used: ", psutil.virtual_memory()[2], "%")
 
             # This step is a map operation - should happen in parallel/async
-            rand_indx = np.random.permutation(len(self.alliance.members))
+            rand_indx = np.random.permutation(len(self.alliance.members))[:parameters["c_parameter"]]
+            global_weights = self.current_global_model.model.get_weights()
+
             for indx in rand_indx:
-                # Each member gets its own copy of the model
-                partialModel = copy.deepcopy(self.current_global_model)
-                self.alliance.members[indx].train(partialModel,nr_iter=parameters["nr_local_iterations"])
-                round_models.append(partialModel)
+
+                self.alliance.members[indx].model.set_weights(global_weights)
+                self.alliance.members[indx].train(self.alliance.members[indx].model,
+                                                  parameters=parameters)
 
             # Average the model updates  - here  we have a global synchronization step. Server should aggregate
-            weights = self.current_global_model.average_weights(round_models)
-            self.current_global_model.set_weights(weights)
+            if parameters['model_size_averaging'] == True:
+                temp_data = np.array([[member.model, member.data_size] for member in self.alliance.members])
+                all_models = list(temp_data[:,0])
+                parameters['model_sizes'] = list(temp_data[:,1])
+                new_weights, weights_std = self.current_global_model.average_weights(all_models, parameters)
+            else:
+                all_models = [member.model for member in self.alliance.members]
+                new_weights, weights_std = self.current_global_model.average_weights(all_models,parameters)
 
-            #self.current_global_model = model
-            
-            # Training loss, mean error rate over all alliance training data
-            training_loss.append(self.alliance.alliance_training_loss(self.current_global_model))
+            self.current_global_model.set_weights(new_weights)
+            self.training_loss.append(self.alliance.alliance_training_loss(self.current_global_model))
+
             # Test loss, mean error rate on a  validation set
             try:
-                test_loss.append(self.alliance.alliance_test_loss(self.current_global_model))
+                self.test_loss.append(self.alliance.alliance_test_loss(self.current_global_model))
+                pickle.dump(self.test_loss, open(self.filename, 'wb'))
+
                 # TODO: Implement early stopping
             except:
                 pass
 
-        return training_loss, test_loss  
+
+            print("test_loss: ", np.round(np.array(self.test_loss), 3))
+
+        return self.test_loss
 
     def predict(self,x_test):
         """ fdfsd """ 
         return self.current_global_model.predict(x_test)
+
+    def global_score_local_models(self):
+
+        # average all models score
+        model_members = [self.alliance.members[m].model for m in
+                         list(set(np.arange(len(self.members))))]
+
+        w, _ = self.temp_model.average_weights(model_members)
+        self.current_global_model.set_weights(w)
+        test_loss_all = self.alliance_test_loss(self.temp_model)
+        best_w = w
+        print("test loss all: ", np.round(test_loss_all, 4))
+        best_loss = test_loss_all
+        for model_member in range(len(self.alliance.members)):
+            print("model ", self.alliance.members[model_member].data_size, " starts:")
+            # self.alliance.members[model_member].score_test_set.append(self.alliance_test_loss(self.members[model_member].model))
+            model_members = [self.members[m].model for m in
+                             list(set(np.arange(len(self.members))) - set([model_member]))]
+
+            w, _ = self.temp_model.average_weights(model_members)
+            self.current_global_model.set_weights(w)
+            test_loss_wo = self.alliance_test_loss(self.current_global_model)
+            print("test loss wo: ", np.round(test_loss_wo, 4))
+
+            q_score = self.test_loss_all[-1] - test_loss_wo
+            self.members[model_member].q_score.append(q_score)
+            if test_loss_wo > best_loss:
+                best_loss = test_loss_wo
+                best_w = w
+
+        self.current_global_model.set_weights(best_w)
 
 
 class Alliance(object):
@@ -333,8 +408,12 @@ class Alliance(object):
         """ """
         self.members = []
         self.currGlobalModel = None #current global model
+        self.temp_model = None
         self.penalty = penalty
         self.classes = classes
+        self.delta_glob_weights = []
+        self.test_loss = []
+        self.test_loss_all = []
 
     def add_member(self, member): # and register
         self.members.append(member)
@@ -398,9 +477,10 @@ class Alliance(object):
 
     def alliance_test_loss(self,alliance_model):
         """ Use alliance global validation data.  """
+        print("alliance_test_loss")
         y_pred = alliance_model.predict(self.x_test)
         error_rate = compute_errorRate(self.y_test, y_pred)
-        return  error_rate
+        return  1 - error_rate/2
 
     def errRateGlobalModel(self, x_test, y_test,model=None):
         if not model:
@@ -423,6 +503,27 @@ class Alliance(object):
         errRate = compute_errorRate(y_test, y_pred)
         return errRate
 
+    def global_score_local_models(self):
+
+        print("test loss all[-1]: ", np.round(self.test_loss_all[-1],4))
+
+        for model_member in range(len(self.members)):
+            print("model ", self.members[model_member].data_size, " starts:")
+            self.members[model_member].score_test_set.append(self.alliance_test_loss(self.members[model_member].model))
+            model_members = [self.members[m].model for m in list(set(np.arange(len(self.members))) - set([model_member]))]
+
+            # if self.temp_model is None:
+            #     self.temp_model = copy.deepcopy(self.currGlobalModel)
+
+            w,_ = self.temp_model.average_weights(model_members)
+            self.temp_model.set_weights(w)
+            test_loss_wo = self.alliance_test_loss(self.temp_model)
+            print("test loss wo: ", np.round(test_loss_wo,4))
+            q_score = self.test_loss_all[-1] - test_loss_wo
+            self.members[model_member].q_score.append(q_score)
+
+
+
 
 class AllianceMember(object):
     """ Member of machine learning alliance """
@@ -438,6 +539,14 @@ class AllianceMember(object):
         self.P = x_train.shape[1]
         self.loss = 'hinge'
         self.classes = classes
+        self.global_score = []
+        self.data_set_index = 0
+        self.data_order = np.arange(len(x_train))
+        self.data_size = len(x_train)
+        self.score_test_set = []
+        self.delta_weights = []
+        self.weights_spread = []
+        self.q_score = []
 
     def get_model(self):
         if self.model is None:
@@ -485,11 +594,22 @@ class AllianceMember(object):
 
         return self.model
 
-    def train(self, partialModel, nr_iter=1):
+    def train(self, partialModel, nr_iter=1, parameters=None): # training_steps=None, data_augmentation=True,
+             # batch_size=32, learning_rate=0.001, decay=0):
         """ Update global model by training nr_iter iterations on local training data. """
+
         for j in range(nr_iter):
-            train_index = np.random.permutation(len(self.__x_train))
-            partialModel.partial_fit(self.__x_train[train_index],self.__y_train[train_index],classes=self.classes)
+
+
+            data_set_index, data_order = partialModel.partial_fit(x=self.__x_train,
+                                                                  y=self.__y_train,
+                                                                  classes=self.classes,
+                                                                  data_set_index=self.data_set_index,
+                                                                  data_order=self.data_order,
+                                                                  parameters=parameters)
+
+            self.data_set_index = data_set_index
+            self.data_order = data_order
 
 
     ### Predict ###
@@ -529,8 +649,10 @@ class AllianceMember(object):
         if partial_model is None:
             return 1;
         y_pred = partial_model.predict(self.__x_train)
+        # validation = partial_model.model.evaluate(self.__x_train,self.__y_train)
         errRate = compute_errorRate(self.__y_train, y_pred)
-        return errRate
+        # print("errRate: ", errRate, "validation: ", validation)
+        return 1 - errRate/2
 
 
 def _split_and_scale(x,y,test_size=0.2):
@@ -621,7 +743,13 @@ def run_FedAveraging(x,y,M,parameters=None,n_repeats = 1):
 
     return scores, training_loss, test_loss 
 
+def weights_dist(weights1, weights2):
+    delta_w = []
+    for w1, w2 in zip(weights1, weights2):
+        delta_w.append(np.mean(abs(w1 - w2)))
+        # print("delta_w shape: ", abs(w1 - w2).shape)
 
+    return np.mean(np.array(delta_w))
 
 def tune_federated_averaging(x,y,M):
     """ Experiment with hyperparameters for the federated SGD model """
@@ -805,4 +933,5 @@ if __name__ == '__main__':
             #plt.show()
             plt.savefig("localPlots/"+dataset_name+".png")
             plt.clf()
+
 
