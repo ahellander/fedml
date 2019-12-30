@@ -320,7 +320,7 @@ class FedAveragingClassifier(AllianceModel):
 
         for member in self.alliance.members:
             member.set_model(copy.deepcopy(self.current_global_model))
-        #  Start training 
+        #  Start training
         for j in range(parameters["nr_global_iterations"]):
             print("global epoch: ", j)
             print("virtual memory used: ", psutil.virtual_memory()[2], "%")
@@ -930,5 +930,4 @@ if __name__ == '__main__':
             #plt.show()
             plt.savefig("localPlots/"+dataset_name+".png")
             plt.clf()
-
 
