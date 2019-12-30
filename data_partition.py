@@ -48,24 +48,35 @@ def non_iid_classification_data_partitioning(x_data, y_data, N=1, M=2):
         l = np.eye(10)
         sorted_ind = np.array([np.where([list(y_) == list(l[i]) for y_ in y_data])[0] for i in range(len(classes))])
 
-    part_len = N*M//len(classes)
-    extra_parts = N*M % len(classes)
+    part_len = N * M // len(classes)
+    extra_parts = N * M % len(classes)
     parts = np.array([part_len for i in range(len(classes))])
     parts[:extra_parts] += 1
     c = np.array([np.int32(np.linspace(0, len(sorted_ind[i]), parts[i] + 1)) for i in range(len(classes))])
-    new_sorted_ind = np.array([[sorted_ind[i][c[i][ j]:c[i][ j + 1]] for j in range(parts[i])] for i in range(len(classes))])
+    new_sorted_ind = np.array(
+        [[sorted_ind[i][c[i][j]:c[i][j + 1]] for j in range(parts[i])] for i in range(len(classes))])
 
-    x_list = [np.zeros(([0] + list(x_data.shape[1:]))) for i in range(N)]
-    y_list = [np.zeros(([0] + list(y_data.shape[1:]))).astype(classes.dtype) for i in range(N)]
+    x_list = [[]]*M
+    y_list = [[]]*M
 
-    member_flow = np.reshape(np.array([np.random.permutation(np.arange(N)) for i in range(M)]), -1)
-    k=0
+    available_members = np.arange(M)
     for i in range(len(classes)):
-        members_ind, member_flow = np.split(member_flow, [parts[k]])
-        for ind in range(parts[k]):
-            y_list[members_ind[ind]] = np.concatenate((y_list[members_ind[ind]], y_data[new_sorted_ind[i][ind]]))
-            x_list[members_ind[ind]] = np.concatenate((x_list[members_ind[ind]], x_data[new_sorted_ind[i][ind]]))
-        k += 1
+        if len(available_members) >= len(new_sorted_ind[i]):
+            draw_members, available_members = np.split(np.random.permutation(available_members),
+                                                       [len(new_sorted_ind[i])])
+
+        else:
+            draw_members = available_members
+            draw_ = np.random.permutation(np.array(list(set(np.arange(M)) - set(draw_members))))[:(len(new_sorted_ind[i]) - len(available_members))]
+            draw_members = np.concatenate((draw_members,draw_))
+            available_members = np.array(list(set(np.arange(M)) - set(draw_)),dtype=np.int32)
+
+        k = 0
+        for j in draw_members:
+            y_list[j] = np.concatenate((y_list[j], y_data[new_sorted_ind[i][k]]))
+            x_list[j] = np.concatenate((x_list[j], x_data[new_sorted_ind[i][k]]))
+            k += 1
+
     return np.array(x_list), np.array(y_list)
 
 
