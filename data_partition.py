@@ -56,8 +56,8 @@ def non_iid_classification_data_partitioning(x_data, y_data, N=1, M=2):
     new_sorted_ind = np.array(
         [[sorted_ind[i][c[i][j]:c[i][j + 1]] for j in range(parts[i])] for i in range(len(classes))])
 
-    x_list = [[]]*M
-    y_list = [[]]*M
+    x_list = list(np.zeros(([M, 0] + list(x_data.shape[1:]))))
+    y_list = list(np.zeros(([M, 0] + list(y_data.shape[1:]))))
 
     available_members = np.arange(M)
     for i in range(len(classes)):
