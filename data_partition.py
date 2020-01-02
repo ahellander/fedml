@@ -29,10 +29,12 @@ def iid_data_partitioning(x_data, y_data=None, N=1):
 
         if y_data is not None:
             y_list.append(y_data[fraction_splits[i]:fraction_splits[i + 1]])
-            return x_list, y_list
-        else:
-            return x_list
 
+    if y_data is not None:
+        y_list.append(y_data[fraction_splits[i]:fraction_splits[i + 1]])
+        return np.array(x_list), np.array(y_list)
+    else:
+        return np.array(x_list)
 
 def non_iid_classification_data_partitioning(x_data, y_data, N=1, M=2):
 
