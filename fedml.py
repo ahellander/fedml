@@ -281,7 +281,8 @@ class FedAveragingClassifier(AllianceModel):
         self.base_learner = base_learner
         self.current_global_model = None
         self.default_parameters = {"nr_global_iterations":100, "nr_local_iterations":1, "training_steps":None}
-        self.weights_std = []
+        self.best_model = base_learner
+        self.best_loss = 0
         self.training_loss = []
         self.test_loss = []
         nr = ""
@@ -347,9 +348,13 @@ class FedAveragingClassifier(AllianceModel):
 
             # Test loss, mean error rate on a  validation set
             try:
-                self.test_loss.append(self.alliance.alliance_test_loss(self.current_global_model))
-                pickle.dump(self.test_loss, open(self.filename, 'wb'))
-
+                current_loss = self.alliance.alliance_test_loss(self.current_global_model)
+                self.test_loss.append(current_loss)
+                if current_loss > self.best_loss:
+                    self.best_model.set_weights(new_weights)
+                    self.best_loss = current_loss
+                pickle.dump(self.test_loss, open('test_accuracy_' + self.filename, 'wb'))
+                pickle.dump(self.training_loss, open('train_accuracy_' + self.filename, 'wb'))
                 # TODO: Implement early stopping
             except:
                 pass
@@ -361,7 +366,9 @@ class FedAveragingClassifier(AllianceModel):
 
     def predict(self,x_test):
         """ fdfsd """ 
-        return self.current_global_model.predict(x_test)
+        #return self.current_global_model.predict(x_test)
+
+        return self.best_model.predict_class(x_test)
 
     def global_score_local_models(self):
 
@@ -369,7 +376,7 @@ class FedAveragingClassifier(AllianceModel):
         model_members = [self.alliance.members[m].model for m in
                          list(set(np.arange(len(self.members))))]
 
-        w, _ = self.temp_model.average_weights(model_members)
+        w = self.temp_model.average_weights(model_members)
         self.current_global_model.set_weights(w)
         test_loss_all = self.alliance_test_loss(self.temp_model)
         best_w = w
