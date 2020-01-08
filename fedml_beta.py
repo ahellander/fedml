@@ -317,8 +317,8 @@ class FedAveragingClassifier(AllianceModel):
             self.alliance.temp_model = self.base_learner
 
         for member in self.alliance.members:
-            member.set_model(copy.deepcopy(self.current_global_model))
-            #member.set_model(self.current_global_model)
+            #member.set_model(copy.deepcopy(self.current_global_model))
+            member.set_model(self.current_global_model)
 
         #  Start training
         for j in range(parameters["nr_global_iterations"]):
@@ -328,22 +328,23 @@ class FedAveragingClassifier(AllianceModel):
             # This step is a map operation - should happen in parallel/async
             rand_indx = np.random.permutation(len(self.alliance.members))[:parameters["c_parameter"]]
             global_weights = self.current_global_model.model.get_weights()
-
+            weights = []
             for indx in rand_indx:
 
                 self.alliance.members[indx].model.set_weights(global_weights)
                 self.alliance.members[indx].train(self.alliance.members[indx].model,
                                                   parameters=parameters)
+                weights =+ [self.alliance.members[indx].model.get_weights()]
 
             # Average the model updates  - here  we have a global synchronization step. Server should aggregate
             if parameters['model_size_averaging'] == True:
                 temp_data = np.array([[member.model, member.data_size] for member in self.alliance.members])
                 all_models = list(temp_data[:,0])
                 parameters['model_size'] = list(temp_data[:,1])
-                new_weights = self.current_global_model.average_weights(all_models, parameters)
+                new_weights = self.current_global_model.average_weights(weights, parameters)
             else:
                 all_models = [member.model for member in self.alliance.members]
-                new_weights = self.current_global_model.average_weights(all_models,parameters)
+                new_weights = self.current_global_model.average_weights(weights,parameters)
 
             self.current_global_model.set_weights(new_weights)
             self.training_loss.append(self.alliance.alliance_training_loss(self.current_global_model))

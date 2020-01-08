@@ -58,11 +58,11 @@ class KerasSequentialAML(BaseLearner):
 
 
     @staticmethod
-    def average_weights(models,parameters):
+    def average_weights(weights,parameters):
         """ fdfdsfs """
         if not "model_size" in parameters:
             parameters["model_size"] = None
-        weights = [model.model.get_weights() for model in models]
+        #weights = [model.model.get_weights() for model in models]
         avg_w = []
         if parameters["model_size"] is not None:
             data_points = np.sum(np.array(parameters["model_size"]))
