@@ -334,7 +334,7 @@ class FedAveragingClassifier(AllianceModel):
                 self.alliance.members[indx].model.set_weights(global_weights)
                 self.alliance.members[indx].train(self.alliance.members[indx].model,
                                                   parameters=parameters)
-                weights =+ [self.alliance.members[indx].model.model.get_weights()]
+                weights += [self.alliance.members[indx].model.model.get_weights()]
 
             # Average the model updates  - here  we have a global synchronization step. Server should aggregate
             if parameters['model_size_averaging'] == True:
