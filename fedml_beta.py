@@ -339,11 +339,11 @@ class FedAveragingClassifier(AllianceModel):
             # Average the model updates  - here  we have a global synchronization step. Server should aggregate
             if parameters['model_size_averaging'] == True:
                 temp_data = np.array([[member.model, member.data_size] for member in self.alliance.members])
-                all_models = list(temp_data[:,0])
+                #all_models = list(temp_data[:,0])
                 parameters['model_size'] = list(temp_data[:,1])
                 new_weights = self.current_global_model.average_weights(weights, parameters)
             else:
-                all_models = [member.model for member in self.alliance.members]
+                #all_models = [member.model for member in self.alliance.members]
                 new_weights = self.current_global_model.average_weights(weights,parameters)
 
             self.current_global_model.set_weights(new_weights)
