@@ -353,7 +353,7 @@ class FedAveragingClassifier(AllianceModel):
                                    lay_n, lay_l in zip(new_weights, temp_weights)]
                 else:
                     new_weights = [(lay_n + lay_l.T / len(self.alliance.members)).T for
-                                   lay_n, lay_l in zip(new_weights, temp_weights)
+                                   lay_n, lay_l in zip(new_weights, temp_weights)]
 
 
             # Average the model updates  - here  we have a global synchronization step. Server should aggregate
