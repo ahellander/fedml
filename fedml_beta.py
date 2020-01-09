@@ -336,6 +336,12 @@ class FedAveragingClassifier(AllianceModel):
             rand_indx = np.random.permutation(len(self.alliance.members))[:parameters["c_parameter"]]
             global_weights = self.current_global_model.model.get_weights()
             new_weights = [np.zeros(lay_l.shape) for lay_l in global_weights]
+            print("global_weights shape: ")
+            for lay_l in global_weights:
+                print("shape: ", lay_l.shape)
+            print("new_weights shape: " )
+            for lay_l in new_weights:
+                print("shape: ", lay_l.shape)
 
             data_points = np.sum(np.array(parameters["model_size"]))
             for indx in rand_indx:
