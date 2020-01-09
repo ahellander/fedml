@@ -335,7 +335,7 @@ class FedAveragingClassifier(AllianceModel):
             # This step is a map operation - should happen in parallel/async
             rand_indx = np.random.permutation(len(self.alliance.members))[:parameters["c_parameter"]]
             global_weights = self.current_global_model.model.get_weights()
-            new_weights = []
+            new_weights = [np.zeros(lay_l.shape) for lay_l in global_weights]
 
             data_points = np.sum(np.array(parameters["model_size"]))
             for indx in rand_indx:
@@ -349,10 +349,11 @@ class FedAveragingClassifier(AllianceModel):
                 # lay_l = np.array([w[l] for w in weights])
                 # weight_l_avg = np.sum((lay_l.T * parameters["model_size"] / data_points).T, 0)
                 if parameters['model_size_averaging'] == True:
-                    new_weights += [(lay_l.T * parameters["model_size"][indx] / data_points).T for lay_l in temp_weights]
+                    new_weights = [(lay_n + lay_l.T * parameters["model_size"][indx] / data_points).T for
+                                   lay_n, lay_l in zip(new_weights, temp_weights)]
                 else:
-                    new_weights += [(lay_l.T / len(self.alliance.members)).T for lay_l in
-                                    temp_weights]
+                    new_weights = [(lay_n + lay_l.T / len(self.alliance.members)).T for
+                                   lay_n, lay_l in zip(new_weights, temp_weights)
 
 
             # Average the model updates  - here  we have a global synchronization step. Server should aggregate
