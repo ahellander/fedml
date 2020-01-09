@@ -294,7 +294,6 @@ class FedAveragingClassifier(AllianceModel):
         self.filename = 'test_loss_' + name + str(nr) + '.p'
 
 
-
         super().__init__(alliance)
 
 
