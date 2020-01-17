@@ -294,6 +294,7 @@ class FedAveragingClassifier(AllianceModel):
         self.filename = 'test_loss_' + name + str(nr) + '.p'
 
 
+
         super().__init__(alliance)
 
 
@@ -316,8 +317,15 @@ class FedAveragingClassifier(AllianceModel):
             self.alliance.temp_model = self.base_learner
 
         for member in self.alliance.members:
-            member.set_model(copy.deepcopy(self.current_global_model))
-            #member.set_model(self.current_global_model)
+            #member.set_model(copy.deepcopy(self.current_global_model))
+            member.set_model(self.current_global_model)
+
+        #Average the model updates  - here  we have a global synchronization step. Server should aggregate
+        if parameters['model_size_averaging'] == True:
+            temp_data = np.array([[member.model, member.data_size] for member in self.alliance.members])
+            #all_models = list(temp_data[:,0])
+            parameters['model_size'] = list(temp_data[:,1])
+
 
         #  Start training
         for j in range(parameters["nr_global_iterations"]):
@@ -327,22 +335,42 @@ class FedAveragingClassifier(AllianceModel):
             # This step is a map operation - should happen in parallel/async
             rand_indx = np.random.permutation(len(self.alliance.members))[:parameters["c_parameter"]]
             global_weights = self.current_global_model.model.get_weights()
+            new_weights = [np.zeros(lay_l.shape) for lay_l in global_weights]
+            print("global_weights shape: ")
+            for lay_l in global_weights:
+                print("shape: ", lay_l.shape)
+            print("new_weights shape: " )
+            for lay_l in new_weights:
+                print("shape: ", lay_l.shape)
 
+            data_points = np.sum(np.array(parameters["model_size"]))
             for indx in rand_indx:
 
                 self.alliance.members[indx].model.set_weights(global_weights)
                 self.alliance.members[indx].train(self.alliance.members[indx].model,
                                                   parameters=parameters)
+                #weights += [self.alliance.members[indx].model.model.get_weights()]
+
+                temp_weights = self.alliance.members[indx].model.model.get_weights()
+                # lay_l = np.array([w[l] for w in weights])
+                # weight_l_avg = np.sum((lay_l.T * parameters["model_size"] / data_points).T, 0)
+                if parameters['model_size_averaging'] == True:
+                    new_weights = [(lay_n + lay_l.T * parameters["model_size"][indx] / data_points).T for
+                                   lay_n, lay_l in zip(new_weights, temp_weights)]
+                else:
+                    new_weights = [(lay_n + lay_l.T / len(self.alliance.members)).T for
+                                   lay_n, lay_l in zip(new_weights, temp_weights)]
+
 
             # Average the model updates  - here  we have a global synchronization step. Server should aggregate
-            if parameters['model_size_averaging'] == True:
-                temp_data = np.array([[member.model, member.data_size] for member in self.alliance.members])
-                all_models = list(temp_data[:,0])
-                parameters['model_size'] = list(temp_data[:,1])
-                new_weights = self.current_global_model.average_weights(all_models, parameters)
-            else:
-                all_models = [member.model for member in self.alliance.members]
-                new_weights = self.current_global_model.average_weights(all_models,parameters)
+            # if parameters['model_size_averaging'] == True:
+            #     temp_data = np.array([[member.model, member.data_size] for member in self.alliance.members])
+            #     #all_models = list(temp_data[:,0])
+            #     parameters['model_size'] = list(temp_data[:,1])
+            #     new_weights = self.current_global_model.average_weights(weights, parameters)
+            # else:
+            #     all_models = [member.model for member in self.alliance.members]
+
 
             self.current_global_model.set_weights(new_weights)
             self.training_loss.append(self.alliance.alliance_training_loss(self.current_global_model))
